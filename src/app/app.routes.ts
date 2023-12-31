@@ -3,6 +3,7 @@ import { LoggerModule } from './logger/logger.module';
 import { LogViewComponent } from './logger/log-view/log-view.component';
 
 export const routes: Routes = [
-  {path:'login',component:LogViewComponent},
+  {path:'login', loadChildren: () => import('./logger/logger.module').then(m => m.LoggerModule)},
+  {path:'main', loadChildren: () => import('./main-view/main-view.module').then(m => m.MainViewModule)},
   {path: '',redirectTo:'login',pathMatch:'full'}
 ];

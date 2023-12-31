@@ -4,14 +4,14 @@ import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
-  {   path: 'login',   component: LogViewComponent   }
+  {   path: '',   component: LogViewComponent}
 ];
 
 @NgModule({
   declarations: [],
   imports: [
-    CommonModule,
+    CommonModule,RouterModule.forChild(routes)
   ],
-  exports:[]
+  exports:[RouterModule]
 })
 export class LoggerModule { }

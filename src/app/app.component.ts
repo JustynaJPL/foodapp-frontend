@@ -8,7 +8,7 @@ import { NavigationComponent } from './navigation/navigation.component';
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, RouterOutlet, LoggerModule, FooterComponent, NavigationComponent],
+  imports: [CommonModule, RouterOutlet, FooterComponent, NavigationComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
