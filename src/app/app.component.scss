@@ -1,0 +1,12 @@
+body{
+  background-color: var(--divider-color);
+}
+.app{
+  display: flex;
+flex-direction: row;
+flex-wrap: wrap;
+justify-content: flex-start;
+align-items: flex-start;
+align-content: flex-start;
+
+}

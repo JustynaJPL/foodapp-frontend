@@ -1,1 +1,29 @@
-<p>navigation works!</p>
+<div class="navi" [ngClass]="{'navi-wrap': gettogglenavi()}" >
+  <div class="menubutton">
+    <span class="material-symbols-outlined" (click)="toggleNaviMenu()" > menu </span>
+  </div>
+  <ul class="menulist">
+    <li [ngStyle]="{width: (gettogglenavi()===true) ? '50px':'90%' }"
+    [routerLink] = "['/main/home']" >
+      <span class="material-symbols-outlined">calendar_month</span>
+      <p *ngIf="!gettogglenavi()">PLAN DIETY</p>
+    </li>
+    <li [ngStyle]="{width: (gettogglenavi()===true) ? '50px':'90%' }"
+    [routerLink] = "['/main/recipes']">
+      <span class="material-symbols-outlined">format_list_numbered</span>
+      <p *ngIf="!gettogglenavi()" >PRZEPISY</p>
+    </li>
+    <li [ngStyle]="{width: (gettogglenavi()===true) ? '50px':'90%' }"
+    [routerLink] = "['/main/gen-diet']">
+      <span class="material-symbols-outlined">fact_check</span>
+      <p *ngIf="!gettogglenavi()">GENERUJ LISTĘ</p>
+    </li>
+    <li [ngStyle]="{width: (gettogglenavi()===true) ? '50px':'90%' }"
+    [routerLink] = "['/main/my-settings']">
+      <span class="material-symbols-outlined">manage_accounts</span>
+      <p *ngIf="!gettogglenavi()">MOJE DANE</p>
+    </li>
+  </ul>
+</div>
+
+<!-- [ngClass]="{'li-wrapjusta': gettogglenavi()}" -->

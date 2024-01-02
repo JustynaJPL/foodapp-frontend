@@ -1,0 +1,89 @@
+.navi {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  align-content: flex-start;
+  // position: 0;
+  height:95vh;
+  width: 300px;
+  justify-content: center;
+  background-color: var(--primary-color);
+  font-size: 30px;
+
+  .menubutton {
+    width: 90%;
+    height: 50px;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-items: center;
+    align-content: center;
+    color: var(--text);
+  }
+
+  .menulist {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    text-decoration: none;
+    width: 90%;
+    color: var(--text);
+    margin: 0;
+    padding: 0;
+    margin-top: 50px;
+    font-size: 20px;
+
+    li {
+      width: 90%;
+      height: 50px;
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: flex-start;
+      align-items: flex-start;
+      align-content: flex-start;
+      text-decoration: none;
+
+      // border: solid 1px black;
+      margin: 10px;
+      span{
+        width: 50px;
+        height: 50px;
+      }
+      p{
+        height: 50px;
+        margin: 10px;
+
+      }
+
+      &:hover{
+        background-color: var(--dark-primary-color);
+      }
+    }
+  }
+}
+
+.material-symbols-outlined {
+  font-size: 50px;
+  font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 50;
+}
+
+.navi-wrap{
+  width: 100px;
+  ul{
+    display: flex;
+    flex-direction: column;
+    li{
+      width: 50px;
+    }
+  }
+
+}
+
+.li-wrapjusta{
+  width: 50px;
+}

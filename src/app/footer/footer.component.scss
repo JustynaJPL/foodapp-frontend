@@ -1,6 +1,19 @@
+// $dark-primary-color: #D32F2F;
+// $light-primary-color: #FFCDD2;
+// $primary-color:#F44336;
+// $text: #FFFFFF;
+// $accent-color: #4CAF50;
+// $primary-text:#212121;
+// $secondary-text: #757575;
+// $divider-color:#BDBDBD;
+
 p {
-  background-color: #333;
-  color: #fff;
-  padding: 10px;
+  background-color: var(--dark-primary-color);
+  color: var(--text);
+  padding: 0;
   text-align: center;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  margin: 0;
 }
