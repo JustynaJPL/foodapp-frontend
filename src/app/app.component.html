@@ -1,11 +1,7 @@
-<div class="app">
-
-  <app-navigation></app-navigation>
-  <router-outlet></router-outlet>
-
+<mat-sidenav-container class="example-container">
+  <mat-sidenav mode="side" opened><app-navigation></app-navigation></mat-sidenav>
+  <mat-sidenav-content><router-outlet></router-outlet></mat-sidenav-content>
+</mat-sidenav-container>
+<div class="footer">
+<app-footer></app-footer>
 </div>
-<div>
-  <app-footer></app-footer>
-</div>
-
-

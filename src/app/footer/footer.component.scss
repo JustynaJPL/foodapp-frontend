@@ -6,9 +6,14 @@
 // $primary-text:#212121;
 // $secondary-text: #757575;
 // $divider-color:#BDBDBD;
+.all{
+  height: 5vh;
+  background-color: var(--dark-primary-color);
+}
+
 
 p {
-  background-color: var(--dark-primary-color);
+
   color: var(--text);
   padding: 0;
   text-align: center;

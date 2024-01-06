@@ -10,7 +10,7 @@ import { RouterModule } from '@angular/router';
   styleUrl: './navigation.component.scss'
 })
 export class NavigationComponent {
-  private collapsenavi = false;
+  private collapsenavi = true;
 
   public toggleNaviMenu():void{
     this.collapsenavi = !this.collapsenavi;
