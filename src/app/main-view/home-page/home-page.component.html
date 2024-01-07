@@ -1,1 +1,211 @@
-<p>home-page works!</p>
+<div class="home-page">
+  <div class="main-content">
+    <div class="home-header">
+      <h1>Plan dnia</h1>
+      <mat-form-field>
+        <mat-label>{{ currentDate | date : "dd-MM-yyyy" }}</mat-label>
+        <input matInput [matDatepicker]="picker" />
+        <mat-hint>DD/MM/YYYY</mat-hint>
+        <mat-datepicker-toggle
+          matIconSuffix
+          [for]="picker"
+        ></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+      <button mat-button color="primary">
+        <span class="material-symbols-outlined md-48"> receipt_long </span>
+      </button>
+    </div>
+    <mat-card class="breakfast-card">
+      <mat-card-header>
+        <mat-card-title>Śniadanie</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <mat-divider></mat-divider>
+
+        <table matSort (matSortChange)="sortData($event)" class="info-data">
+          <tr>
+            <th mat-sort-header="name">Nazwa</th>
+            <th mat-sort-header="calories">Kalorie</th>
+            <th mat-sort-header="fat">Białka (g)</th>
+            <th mat-sort-header="carbs">Tłuszcze (g)</th>
+            <th mat-sort-header="protein">Węglowodany (g)</th>
+            <th mat-sort-header="fiber">Błonnik (g)</th>
+            <th mat-sort-header="actions"></th>
+          </tr>
+
+          @for (fooditems of sortedData; track fooditems) {
+          <tr>
+            <td>{{ fooditems.name }}</td>
+            <td>{{ fooditems.calories }}</td>
+            <td>{{ fooditems.fat }}</td>
+            <td>{{ fooditems.carbs }}</td>
+            <td>{{ fooditems.protein }}</td>
+            <td>{{ fooditems.protein }}</td>
+            <td>
+              <span class="material-symbols-outlined">
+                edit
+                </span>
+                <span class="material-symbols-outlined">
+                  delete
+                  </span>
+
+            </td>
+          </tr>
+          }
+        </table>
+      </mat-card-content>
+      <mat-card-actions>
+        <button mat-button color="primary">
+          <span class="material-symbols-outlined"> add </span>
+        </button>
+      </mat-card-actions>
+    </mat-card>
+
+    <mat-card class="dinner-card">
+      <mat-card-header>
+        <mat-card-title>Obiad</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <mat-divider></mat-divider>
+        <table matSort (matSortChange)="sortData($event)" class="info-data">
+          <tr>
+            <th mat-sort-header="name">Nazwa</th>
+            <th mat-sort-header="calories">Kalorie</th>
+            <th mat-sort-header="fat">Białka (g)</th>
+            <th mat-sort-header="carbs">Tłuszcze (g)</th>
+            <th mat-sort-header="protein">Węglowodany (g)</th>
+            <th mat-sort-header="fiber">Błonnik (g)</th>
+            <th mat-sort-header="actions"></th>
+          </tr>
+
+          @for (fooditems of sortedData; track fooditems) {
+          <tr>
+            <td>{{ fooditems.name }}</td>
+            <td>{{ fooditems.calories }}</td>
+            <td>{{ fooditems.fat }}</td>
+            <td>{{ fooditems.carbs }}</td>
+            <td>{{ fooditems.protein }}</td>
+            <td>{{ fooditems.protein }}</td>
+            <td>
+              <span class="material-symbols-outlined">
+                edit
+                </span>
+                <span class="material-symbols-outlined">
+                  delete
+                  </span>
+
+            </td>
+          </tr>
+          }
+        </table>
+      </mat-card-content>
+      <mat-card-actions>
+        <button mat-button color="primary">
+          <span class="material-symbols-outlined"> add </span>
+        </button>
+      </mat-card-actions>
+    </mat-card>
+
+    <mat-card class="supper-card">
+      <mat-card-header>
+        <mat-card-title>Kolacja</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <mat-divider></mat-divider>
+        <table matSort (matSortChange)="sortData($event)" class="info-data">
+          <tr>
+            <th mat-sort-header="name">Nazwa</th>
+            <th mat-sort-header="calories">Kalorie</th>
+            <th mat-sort-header="fat">Białka (g)</th>
+            <th mat-sort-header="carbs">Tłuszcze (g)</th>
+            <th mat-sort-header="protein">Węglowodany (g)</th>
+            <th mat-sort-header="fiber">Błonnik (g)</th>
+            <th mat-sort-header="actions"></th>
+          </tr>
+
+          @for (fooditems of sortedData; track fooditems) {
+          <tr>
+            <td>{{ fooditems.name }}</td>
+            <td>{{ fooditems.calories }}</td>
+            <td>{{ fooditems.fat }}</td>
+            <td>{{ fooditems.carbs }}</td>
+            <td>{{ fooditems.protein }}</td>
+            <td>{{ fooditems.protein }}</td>
+            <td>
+              <span class="material-symbols-outlined">
+                edit
+                </span>
+                <span class="material-symbols-outlined">
+                  delete
+                  </span>
+
+            </td>
+          </tr>
+          }
+        </table>
+      </mat-card-content>
+      <mat-card-actions>
+        <button mat-button color="primary">
+          <span class="material-symbols-outlined"> add </span>
+        </button>
+      </mat-card-actions>
+    </mat-card>
+
+    <mat-card class="other-card">
+      <mat-card-header>
+        <mat-card-title>Pozostałe</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <mat-divider></mat-divider>
+        <table matSort (matSortChange)="sortData($event)" class="info-data">
+          <tr>
+            <th mat-sort-header="name">Nazwa</th>
+            <th mat-sort-header="calories">Kalorie</th>
+            <th mat-sort-header="fat">Białka (g)</th>
+            <th mat-sort-header="carbs">Tłuszcze (g)</th>
+            <th mat-sort-header="protein">Węglowodany (g)</th>
+            <th mat-sort-header="fiber">Błonnik (g)</th>
+            <th mat-sort-header="actions"></th>
+          </tr>
+
+          @for (fooditems of sortedData; track fooditems) {
+          <tr>
+            <td>{{ fooditems.name }}</td>
+            <td>{{ fooditems.calories }}</td>
+            <td>{{ fooditems.fat }}</td>
+            <td>{{ fooditems.carbs }}</td>
+            <td>{{ fooditems.protein }}</td>
+            <td>{{ fooditems.protein }}</td>
+            <td>
+              <span class="material-symbols-outlined">
+                edit
+                </span>
+                <span class="material-symbols-outlined">
+                  delete
+                  </span>
+
+            </td>
+          </tr>
+          }
+        </table>
+      </mat-card-content>
+      <mat-card-actions>
+        <button mat-button color="primary">
+          <span class="material-symbols-outlined"> add </span>
+        </button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+  <div class="chartdonut">
+    <apx-chart
+      [series]="chartOptionsPie.series!"
+      [chart]="chartOptionsPie.chart!"
+      [labels]="chartOptionsPie.labels!"
+      [responsive]="chartOptionsPie.responsive!"
+    ></apx-chart>
+    <div class="kalorie">
+      <h1>2000 kcal</h1>
+    </div>
+  </div>
+</div>

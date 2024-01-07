@@ -1,6 +1,12 @@
 <mat-sidenav-container class="example-container">
   <mat-sidenav mode="side" opened><app-navigation></app-navigation></mat-sidenav>
-  <mat-sidenav-content><router-outlet></router-outlet></mat-sidenav-content>
+  <mat-sidenav-content>
+    <div class="view-cont">
+      <router-outlet></router-outlet>
+
+    </div>
+
+  </mat-sidenav-content>
 </mat-sidenav-container>
 <div class="footer">
 <app-footer></app-footer>

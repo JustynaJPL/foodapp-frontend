@@ -1,3 +1,4 @@
+import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { CUSTOM_ELEMENTS_SCHEMA, Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, RouterOutlet } from '@angular/router';
@@ -15,7 +16,10 @@ import {MatSidenavModule} from '@angular/material/sidenav';
     ],
   templateUrl: './app.component.html',
   schemas:[],
-  styleUrl: './app.component.scss'
+  styleUrl: './app.component.scss',
+  providers: [
+    { provide: MAT_DATE_LOCALE, useValue: 'es-ES' }
+  ]
 })
 export class AppComponent {
   title = 'frontend';

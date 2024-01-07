@@ -1,1 +1,95 @@
-<p>my-settings works!</p>
+<mat-grid-list cols="3" rowHeight="1.5:1">
+  <mat-grid-tile>
+    <mat-card class="info-card">
+      <mat-card-header>
+        <div mat-card-avatar class="avatar-image"></div>
+        <mat-card-title>Login</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <mat-divider [inset]="true"></mat-divider>
+        <ul>
+          <li>
+            <label for="name">Imię i nazwisko</label>
+            <h2>Anna Kowalska</h2>
+            <span class="material-symbols-outlined"> edit </span>
+          </li>
+          <li>
+            <label for="gender">Płeć</label>
+            <h2>Kobieta</h2>
+            <span class="material-symbols-outlined"> edit </span>
+          </li>
+          <li>
+            <label for="weight">Moja aktualna waga</label>
+            <h2>100kg</h2>
+            <span class="material-symbols-outlined"> edit </span>
+          </li>
+          <li>
+            <label for="height">Mój wzrost</label>
+            <h2>170</h2>
+            <span class="material-symbols-outlined"> edit </span>
+          </li>
+          <li>
+            <label for="age">Mój wiek</label>
+            <h2>40</h2>
+            <span class="material-symbols-outlined"> edit </span>
+          </li>
+          <li>
+            <label for="sport">Moja aktywność</label>
+            <h2>Niska aktywność</h2>
+            <span class="material-symbols-outlined"> edit </span>
+          </li>
+        </ul>
+      </mat-card-content>
+      <mat-card-actions> </mat-card-actions>
+    </mat-card>
+  </mat-grid-tile>
+
+  <mat-grid-tile>
+    <div class="bmi">
+      <h1>BMI</h1>
+      <h2>Body Mass Index</h2>
+      <p>BMI = masa ciała(kg) / [wysokość ciała]<sup>2</sup></p>
+      <p class="bmi-value">35</p>
+      <!-- dodać normalizację do wartości max 50 i zmieniać kolory w zależności od wartości-->
+      <mat-progress-bar mode="determinate" value="35"></mat-progress-bar>
+      <h3>Stopień otyłości:</h3>
+      <h3 class="obesity-scale">II stopień otyłości</h3>
+      <h6>Interpretacja wskaźnika BMI według kryteriów WHO</h6>
+      <h6>0-16 III stopień szczupłości, 16-16,9 - II stopień szczupłości, 17 - 18,4 - I stopień szczupłości,
+        18,5 - 24,9 - norma, 25 - 29,9 - nadwaga, 30-34,9 - I stopień otyłości, 35 - 39,9 - II stopień otyłości,
+        ponad 40 - III stopień otyłości</h6>
+    </div>
+  </mat-grid-tile>
+
+  <mat-grid-tile class="my-medical-data">
+    <div class="gda">
+      <div class="gda-title">
+        <h1>GDA</h1>
+        <span class="material-symbols-outlined"> edit</span>
+      </div>
+      <h2>Guideline Daily Amount</h2>
+      <h3>Wskazane Dzienne Spożycie</h3>
+      <div id="chartdonut">
+        <apx-chart
+          [series]="chartOptionsPie.series!"
+          [chart]="chartOptionsPie.chart!"
+          [labels]="chartOptionsPie.labels!"
+          [responsive]="chartOptionsPie.responsive!"
+        ></apx-chart>
+      </div>
+      <h1>2000 kcal</h1>
+    </div>
+  </mat-grid-tile>
+
+  <mat-grid-tile colspan="3">
+    <div class="chart">
+      <apx-chart
+        [series]="chartOptions.series!"
+        [chart]="chartOptions.chart!"
+        [xaxis]="chartOptions.xaxis!"
+        [title]="chartOptions.title!"
+      ></apx-chart>
+
+    </div>
+    </mat-grid-tile>
+</mat-grid-list>

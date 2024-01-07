@@ -2,10 +2,13 @@ body{
   background-color: var(--divider-color);
 }
 .example-container{
-  height: 95vh;
+  min-height: 95vh;
   width: 100vw;
 }
 .footer{
   height: 5vh;
+}
 
+.view-cont{
+  min-height: 95vh;
 }
