@@ -1,28 +1,44 @@
 <!-- <div class="container"> -->
-  <mat-card raised center>
-    <mat-card-header>
-      <mat-card-title> Witaj! </mat-card-title>
-      <mat-card-subtitle>W celu zalogowania podaj swoje dane</mat-card-subtitle>
-    </mat-card-header>
+<mat-card raised center>
+  <mat-card-header>
+    <mat-card-title> Witaj! </mat-card-title>
+    <mat-card-subtitle>W celu zalogowania podaj swoje dane</mat-card-subtitle>
+  </mat-card-header>
 
-    <mat-card-content>
-      <mat-form-field>
-        <mat-label>Login</mat-label>
-        <input matInput [formControl]="login" required />
-        @if (login.invalid) {
-        <mat-error>{{ getErrorMessage() }}</mat-error>
-        }
-      </mat-form-field>
-      <mat-form-field>
-        <mat-label>Hasło</mat-label>
-        <input matInput type="password" [formControl]="haslo" required />
-        @if (haslo.invalid) {
-        <mat-error>{{ getErrorMessage() }}</mat-error>
-        }
-      </mat-form-field>
-    </mat-card-content>
-    <mat-card-actions end>
-      <button mat-raised-button color="accent">Zaloguj</button>
-    </mat-card-actions>
-  </mat-card>
+  <mat-card-content>
+    <mat-card>
+      <mat-card-title>Login</mat-card-title>
+      <mat-card-content>
+        <form [formGroup]="form" (ngSubmit)="submit()">
+          <p>
+            <mat-form-field>
+              <input
+                type="text"
+                matInput
+                placeholder="E-mail"
+                formControlName="username"
+              />
+            </mat-form-field>
+          </p>
+
+          <p>
+            <mat-form-field>
+              <input
+                type="password"
+                matInput
+                placeholder="Hasło"
+                formControlName="password"
+              />
+            </mat-form-field>
+          </p>
+
+          <div class="button">
+            <button type="submit" mat-button>Zaloguj!</button>
+          </div>
+        </form>
+      </mat-card-content>
+    </mat-card>
+  </mat-card-content>
+  <mat-card-actions end> </mat-card-actions>
+</mat-card>
 <!-- </div> -->
