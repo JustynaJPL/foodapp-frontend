@@ -40,10 +40,12 @@ export class LogViewComponent {
       (response) => {
         // Przykładowa obsługa odpowiedzi z serwera
         const token = response.data.jwt;
+        const userid = response.data.user.id;
         this.logService.saveToken(token);
+        this.logService.saveUserId(userid);
         console.log('Login successful');
         console.log(token);
-        this.router.navigate(['/main']);
+        this.router.navigate(['/main/home']);
       },
       (error) => {
         console.error('Login failed', error);

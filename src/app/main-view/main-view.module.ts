@@ -5,12 +5,15 @@ import { GenDietComponent } from './gen-diet/gen-diet.component';
 import { RecipesComponent } from './recipes/recipes.component';
 import { MySettingsComponent } from './my-settings/my-settings.component';
 import { RouterModule, Routes } from '@angular/router';
+import { AuthGuardService } from '../auth-guard.service';
+import { AuthService } from '../auth.service';
+import { HttpClientModule } from '@angular/common/http';
 
 const routes: Routes = [
-  {   path: 'home',   component: HomePageComponent},
-  {   path: 'gen-diet',   component: GenDietComponent},
-  {   path: 'recipes',   component: RecipesComponent},
-  {   path: 'my-settings',   component: MySettingsComponent},
+  {   path: 'home',   component: HomePageComponent, canActivate:[AuthGuardService]},
+  {   path: 'gen-diet',   component: GenDietComponent , canActivate:[AuthGuardService]},
+  {   path: 'recipes',   component: RecipesComponent , canActivate:[AuthGuardService]},
+  {   path: 'my-settings',   component: MySettingsComponent, canActivate:[AuthGuardService]},
   {   path: '', redirectTo:'home', pathMatch:'full'}
 ];
 
@@ -18,8 +21,9 @@ const routes: Routes = [
 @NgModule({
   declarations: [],
   imports: [
-    CommonModule, RouterModule.forChild(routes)
+    CommonModule, RouterModule.forChild(routes), HttpClientModule
   ],
-  exports:[RouterModule]
+  exports:[RouterModule],
+  providers:[AuthGuardService, AuthService]
 })
 export class MainViewModule { }

@@ -7,6 +7,8 @@ import { FooterComponent } from './footer/footer.component';
 import { NavigationComponent } from './navigation/navigation.component';
 import {MatButtonModule} from '@angular/material/button';
 import {MatSidenavModule} from '@angular/material/sidenav';
+import { AuthGuardService } from './auth-guard.service';
+import { AuthService } from './auth.service';
 
 @Component({
   selector: 'app-root',
@@ -18,7 +20,7 @@ import {MatSidenavModule} from '@angular/material/sidenav';
   schemas:[],
   styleUrl: './app.component.scss',
   providers: [
-    { provide: MAT_DATE_LOCALE, useValue: 'es-ES' }
+    { provide: MAT_DATE_LOCALE, useValue: 'es-ES' }, AuthGuardService, AuthService
   ]
 })
 export class AppComponent {
