@@ -6,6 +6,7 @@ import {MatInputModule} from '@angular/material/input';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatCardModule} from '@angular/material/card';
 import {MatButtonModule} from '@angular/material/button';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -27,7 +28,7 @@ export class LogViewComponent {
   });
   isOK: Boolean;
 
-  constructor(private _logService: LogService){
+  constructor(private logService: LogService, private router:Router){
     this.isOK = true;
 
   }
@@ -35,7 +36,18 @@ export class LogViewComponent {
   submit(){
     //tutaj są przenoszone dane z logowania do servisu
     //generuje się też token do danych
-    this.isOK = this._logService.submitlogindata(this.form.get('username')?.value ,this.form.get('password')?.value);
+    this.logService.login(this.form.get('username')?.value ,this.form.get('password')?.value).then(
+      (response) => {
+        // Przykładowa obsługa odpowiedzi z serwera
+        const token = response.data.jwt;
+        this.logService.saveToken(token);
+        console.log('Login successful');
+        console.log(token);
+        this.router.navigate(['/main']);
+      },
+      (error) => {
+        console.error('Login failed', error);
+      });
   }
 
 
