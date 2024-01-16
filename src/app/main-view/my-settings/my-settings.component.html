@@ -3,19 +3,19 @@
     <mat-card class="info-card">
       <mat-card-header>
         <div mat-card-avatar class="avatar-image"></div>
-        <mat-card-title> Login</mat-card-title>
+        <mat-card-title> {{userData.username}} </mat-card-title>
       </mat-card-header>
       <mat-card-content>
         <mat-divider [inset]="true"></mat-divider>
         <ul>
           <li>
             <label for="name">Imię i nazwisko</label>
-            <h2>Anna Kowalska</h2>
+            <h2> {{userData.name}} </h2>
             <span class="material-symbols-outlined"> edit </span>
           </li>
           <li>
             <label for="gender">Płeć</label>
-            <h2>Kobieta</h2>
+            <h2> {{userData.gender}} </h2>
             <span class="material-symbols-outlined"> edit </span>
           </li>
           <li>
@@ -25,17 +25,17 @@
           </li>
           <li>
             <label for="height">Mój wzrost</label>
-            <h2>170</h2>
+            <h2> {{userData.height}} </h2>
             <span class="material-symbols-outlined"> edit </span>
           </li>
           <li>
             <label for="age">Mój wiek</label>
-            <h2>40</h2>
+            <h2> {{getAge()}} </h2>
             <span class="material-symbols-outlined"> edit </span>
           </li>
           <li>
             <label for="sport">Moja aktywność</label>
-            <h2>Niska aktywność</h2>
+            <h2> {{userData.sport}} </h2>
             <span class="material-symbols-outlined"> edit </span>
           </li>
         </ul>
@@ -49,7 +49,7 @@
       <h1>BMI</h1>
       <h2>Body Mass Index</h2>
       <p>BMI = masa ciała(kg) / [wysokość ciała]<sup>2</sup></p>
-      <p class="bmi-value">35</p>
+      <p class="bmi-value"> {{getBMI()}} </p>
       <!-- dodać normalizację do wartości max 50 i zmieniać kolory w zależności od wartości-->
       <mat-progress-bar mode="determinate" value="35"></mat-progress-bar>
       <h3>Stopień otyłości:</h3>
@@ -71,13 +71,13 @@
       <h3>Wskazane Dzienne Spożycie</h3>
       <div id="chartdonut">
         <apx-chart
-          [series]="chartOptionsPie.series!"
+          [series]="[userData.gda.weglowodany, userData.gda.tluszcze,userData.gda.bialka ]"
           [chart]="chartOptionsPie.chart!"
           [labels]="chartOptionsPie.labels!"
           [responsive]="chartOptionsPie.responsive!"
         ></apx-chart>
       </div>
-      <h1>2000 kcal</h1>
+      <h1> {{userData.gda.kcal}} kcal </h1>
     </div>
   </mat-grid-tile>
 
@@ -91,5 +91,9 @@
       ></apx-chart>
 
     </div>
+    <ul>
+      <li></li>
+    </ul>
+
     </mat-grid-tile>
 </mat-grid-list>

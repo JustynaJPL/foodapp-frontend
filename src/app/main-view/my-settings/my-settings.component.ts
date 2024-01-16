@@ -19,6 +19,7 @@ import { LogService } from "../../logger/log.service";
 import { MySettingsDataService } from "./my-settings-data.service";
 import { HttpErrorResponse, HttpClient } from "@angular/common/http";
 import { Observable, catchError, map, of, take } from "rxjs";
+import { param } from "jquery";
 
 export type ChartOptions = {
   series: ApexAxisChartSeries;
@@ -44,15 +45,15 @@ interface UserDataDB {
   height: number;
   birth: Date;
   sport: string;
+  gda:GDA
 }
 
-interface Entry<T> {
-  id: number;
-  attributes: T;
-}
+interface GDA {
+  bialka:number;
+  kcal:number;
+  tluszcze:number;
+  weglowodany:number;
 
-interface Response {
-  data: Entry<UserDataDB>[];
 }
 
 @Component({
@@ -75,7 +76,14 @@ interface Response {
 
 // TODO:dodac dane z backendu do danych i do wykresów
 export class MySettingsComponent implements OnInit {
+// konstruktor do wykresu kołowego gda
+getBMI // konstruktor do wykresu kołowego gda
+() {
 
+}
+getAge() {
+
+}
   @ViewChild("chart")
   chart!: ChartComponent;
   public chartOptions!: Partial<ChartOptions>;
@@ -83,36 +91,67 @@ export class MySettingsComponent implements OnInit {
   @ViewChild("chartdonut")
   chartdonut!: ChartComponent;
   public chartOptionsPie!: Partial<ChartOptionsPie>;
-
-  userdataDB$: Observable<UserDataDB[]> | undefined;
   error!: HttpErrorResponse;
 
-  thisUserData!: UserDataDB;
+  userData: UserDataDB = {
+    username: "",
+    name: "",
+    gender: "",
+    height: 0,
+    birth: new Date(),
+    sport: "",
+    gda:{
+      bialka:0,
+      kcal:0,
+      tluszcze:0,
+      weglowodany:0
+    }
+
+  };
+
+  private url = "http://localhost:1337/api/users/";
+  private opts = {
+    params: { populate: "*" },
+    headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+  };
 
   constructor(private http: HttpClient) {
+    this.getDataFromStrapi();
     this.setinitialDataForCharts();
+
   }
 
   ngOnInit(): void {
-    const url = "http://localhost:1337/api/users";
-    const opts = {
-      params: { populate: "*"},
-      headers:
-      {Authorization: `Bearer ${localStorage.getItem('token')}`}
-    };
-
-    this.userdataDB$ = this.http.get<Response>(url, opts).pipe(
-      catchError((error) => this.handleError(error)),
-      map((response) => response.data.map((x) => x.attributes))
-    );
-
-    // this.thisUserData = this.userdataDB$.subscribe(
-    //   value =>
-
-    // )
-
 
   }
+
+  getDataFromStrapi() {
+    this.http
+      .get(this.url + localStorage.getItem("userId"), this.opts)
+      .subscribe(
+        (data: any) => {
+          console.log("Data from Strapi:", data);
+          // Handle the data as needed
+          this.userData.username = data.username;
+          this.userData.name = data.name;
+          this.userData.gender = data.gender;
+          this.userData.height = data.height;
+          this.userData.birth = data.birth;
+          this.userData.sport = data.sport;
+          this.userData.gda.kcal = data.gda.kcal;
+          this.userData.gda.bialka = data.gda.bialka;
+          this.userData.gda.tluszcze = data.gda.tluszcze;
+          this.userData.gda.weglowodany = data.gda.weglowodany;
+          console.log(this.userData);
+        },
+        (error) => {
+          console.error("Error fetching data from Strapi:", error);
+          // Handle errors
+        }
+      );
+  }
+
+  ngOnDestroy() {}
 
   private handleError(error: HttpErrorResponse): Observable<never> {
     this.error = error;
@@ -158,9 +197,14 @@ export class MySettingsComponent implements OnInit {
       },
     };
 
+    let w = this.userData.gda.weglowodany;
+    let t = this.userData.gda.tluszcze;
+    let b = this.userData.gda.bialka;
+    var vv = [w,t,b];
+
     // konstruktor do wykresu kołowego gda
     this.chartOptionsPie = {
-      series: [10, 50, 40],
+      series: vv,
       chart: {
         type: "donut",
       },
@@ -180,13 +224,6 @@ export class MySettingsComponent implements OnInit {
       ],
     };
   }
-
-  getData():any{
-    return this.userdataDB$?.subscribe();
-
-
-  }
-
 
 
 }
