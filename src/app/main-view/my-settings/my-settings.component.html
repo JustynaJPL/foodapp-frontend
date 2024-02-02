@@ -1,42 +1,180 @@
-<mat-grid-list cols="3" rowHeight="1.5:1">
+<mat-grid-list cols="2" rowHeight="2.1:1">
   <mat-grid-tile>
     <mat-card class="info-card">
       <mat-card-header>
         <div mat-card-avatar class="avatar-image"></div>
-        <mat-card-title> {{userData.username}} </mat-card-title>
+        <mat-card-title *ngIf="!nameediting">
+          {{ userData.username }}
+          <span
+            class="material-symbols-outlined"
+            (click)="startusernameEditing()"
+          >
+            edit
+          </span>
+        </mat-card-title>
+        <mat-card-title *ngIf="nameediting">
+          <!-- Tryb edycji -->
+          <input [(ngModel)]="userData.username" />
+          <span class="material-symbols-outlined" (click)="changeusername()">
+            done
+          </span>
+          <span
+            class="material-symbols-outlined"
+            (click)="stopusernameEditing()"
+          >
+            clear
+          </span>
+        </mat-card-title>
       </mat-card-header>
       <mat-card-content>
         <mat-divider [inset]="true"></mat-divider>
         <ul>
           <li>
             <label for="name">Imię i nazwisko</label>
-            <h2> {{userData.name}} </h2>
-            <span class="material-symbols-outlined"> edit </span>
+            <h2 *ngIf="!nameedit">{{ userData.name }}</h2>
+            <span
+              class="material-symbols-outlined"
+              *ngIf="!nameedit"
+              (click)="startnameediting()"
+            >
+              edit
+            </span>
+            <input [(ngModel)]="userData.name" *ngIf="nameedit" />
+            <span
+              class="material-symbols-outlined"
+              (click)="changename()"
+              *ngIf="nameedit"
+            >
+              done
+            </span>
+            <span
+              class="material-symbols-outlined"
+              (click)="stopnameEditing()"
+              *ngIf="nameedit"
+            >
+              clear
+            </span>
           </li>
           <li>
             <label for="gender">Płeć</label>
-            <h2> {{userData.gender}} </h2>
-            <span class="material-symbols-outlined"> edit </span>
+            <h2 *ngIf="!genedit">{{ userData.gender }}</h2>
+            <span
+              class="material-symbols-outlined"
+              *ngIf="!genedit"
+              (click)="startgenediting()"
+            >
+              edit
+            </span>
+            <select [(ngModel)]="userData.gender" *ngIf="genedit">
+              <option value="kobieta">Kobieta</option>
+              <option value="meżczyzna">Mężczyzna</option>
+            </select>
+            <span
+              class="material-symbols-outlined"
+              (click)="changegender()"
+              *ngIf="genedit"
+            >
+              done
+            </span>
+            <span
+              class="material-symbols-outlined"
+              (click)="stopgenediting()"
+              *ngIf="genedit"
+            >
+              clear
+            </span>
           </li>
           <li>
             <label for="weight">Moja aktualna waga</label>
-            <h2>100kg</h2>
-            <span class="material-symbols-outlined"> edit </span>
+            <h2>{{ pomiary.slice(-1)[0].wartosc }}</h2>
           </li>
           <li>
             <label for="height">Mój wzrost</label>
-            <h2> {{userData.height}} </h2>
-            <span class="material-symbols-outlined"> edit </span>
+            <h2 *ngIf="!heightedit">{{ userData.height }}</h2>
+            <span
+              class="material-symbols-outlined"
+              *ngIf="!heightedit"
+              (click)="startheightediting()"
+            >
+              edit
+            </span>
+            <input
+              type="number"
+              *ngIf="heightedit"
+              [(ngModel)]="userData.height"
+            />
+            <span
+              class="material-symbols-outlined"
+              (click)="changeheight()"
+              *ngIf="heightedit"
+            >
+              done
+            </span>
+            <span
+              class="material-symbols-outlined"
+              (click)="stopheightediting()"
+              *ngIf="heightedit"
+            >
+              clear
+            </span>
           </li>
           <li>
             <label for="age">Mój wiek</label>
-            <h2> {{getAge()}} </h2>
-            <span class="material-symbols-outlined"> edit </span>
+            <h2 *ngIf="!birthedit">{{ getAge() }}</h2>
+            <span
+              class="material-symbols-outlined"
+              *ngIf="!birthedit"
+              (click)="startbirthediting()"
+            >
+              edit
+            </span>
+            <div *ngIf="birthedit">
+              <input type="date" [(ngModel)]="userData.birth" />
+              <span
+                class="material-symbols-outlined"
+                (click)="changebirth()"
+                *ngIf="birthedit"
+              >
+                done
+              </span>
+              <span
+                class="material-symbols-outlined"
+                (click)="stopbirthediting()"
+                *ngIf="birthedit"
+              >
+                clear
+              </span>
+            </div>
           </li>
           <li>
             <label for="sport">Moja aktywność</label>
-            <h2> {{userData.sport}} </h2>
-            <span class="material-symbols-outlined"> edit </span>
+            <h2 *ngIf="!sportedit">{{ userData.sport }}</h2>
+            <span
+              class="material-symbols-outlined"
+              *ngIf="!sportedit"
+              (click)="startsportediting()"
+            >
+              edit
+            </span>
+            <select [(ngModel)]="userData.sport" *ngIf="sportedit">
+              <option value="niska aktywność">Niska aktywność</option>
+              <option value="średnia aktywność">Średnia aktywność</option>
+              <option value="wysoka aktywność">Wysoka aktywność</option>
+            </select>
+            <span
+              class="material-symbols-outlined"
+              (click)="changesport()"
+              *ngIf="sportedit"
+            >
+              done
+            </span>
+            <span
+              class="material-symbols-outlined"
+              (click)="stopsportediting()"
+              *ngIf="sportedit"
+            >
+              clear
+            </span>
           </li>
         </ul>
       </mat-card-content>
@@ -49,15 +187,23 @@
       <h1>BMI</h1>
       <h2>Body Mass Index</h2>
       <p>BMI = masa ciała(kg) / [wysokość ciała]<sup>2</sup></p>
-      <p class="bmi-value"> {{getBMI()}} </p>
+      <p class="bmi-value">{{ getBMI() | number : ".02" }}</p>
       <!-- dodać normalizację do wartości max 50 i zmieniać kolory w zależności od wartości-->
-      <mat-progress-bar mode="determinate" value="35"></mat-progress-bar>
+      <mat-progress-bar
+        mode="determinate"
+        value="{{ getprogressvalue() }}"
+      ></mat-progress-bar>
       <h3>Stopień otyłości:</h3>
-      <h3 class="obesity-scale">II stopień otyłości</h3>
+      <h3 class="obesity-scale">{{ getObese() }}</h3>
       <h6>Interpretacja wskaźnika BMI według kryteriów WHO</h6>
-      <h6>0-16 III stopień szczupłości, 16-16,9 - II stopień szczupłości, 17 - 18,4 - I stopień szczupłości,
-        18,5 - 24,9 - norma, 25 - 29,9 - nadwaga, 30-34,9 - I stopień otyłości, 35 - 39,9 - II stopień otyłości,
-        ponad 40 - III stopień otyłości</h6>
+      <h6>
+        0-16 III stopień szczupłości, 16-16,9 - II stopień szczupłości, 17 -
+        18,4 - I stopień szczupłości, 18,5 - 24,9 - norma, 25 - 29,9 - nadwaga,
+      </h6>
+      <h6>
+        30-34,9 - I stopień otyłości, 35 - 39,9 - II stopień otyłości, ponad 40
+        - III stopień otyłości
+      </h6>
     </div>
   </mat-grid-tile>
 
@@ -65,35 +211,116 @@
     <div class="gda">
       <div class="gda-title">
         <h1>GDA</h1>
-        <span class="material-symbols-outlined"> edit</span>
+        <span
+          class="material-symbols-outlined"
+          *ngIf="!editgda"
+          (click)="startgdaediting()"
+        >
+          edit</span
+        >
       </div>
       <h2>Guideline Daily Amount</h2>
       <h3>Wskazane Dzienne Spożycie</h3>
       <div id="chartdonut">
         <apx-chart
-          [series]="[userData.gda.weglowodany, userData.gda.tluszcze,userData.gda.bialka ]"
+          [series]="[
+            userData.gda.weglowodany,
+            userData.gda.tluszcze,
+            userData.gda.bialka
+          ]"
           [chart]="chartOptionsPie.chart!"
           [labels]="chartOptionsPie.labels!"
           [responsive]="chartOptionsPie.responsive!"
         ></apx-chart>
       </div>
-      <h1> {{userData.gda.kcal}} kcal </h1>
+      <h1>{{ userData.gda.kcal }} kcal</h1>
+      <div class="editgda" *ngIf="editgda">
+        <ul>
+          <li>
+            <label>Białka</label>
+            <input type="number" [(ngModel)]="userData.gda.bialka" />
+          </li>
+          <li>
+            <label>Tłuszcze</label>
+            <input type="number" [(ngModel)]="userData.gda.tluszcze" />
+          </li>
+          <li>
+            <label>Węglowodany</label>
+            <input type="number" [(ngModel)]="userData.gda.weglowodany" />
+          </li>
+          <li>
+            <label>Kcal</label>
+            <input type="number" [(ngModel)]="userData.gda.kcal" />
+          </li>
+          <li *ngIf="gdaerror">
+            <p> Wartośći gda muszą być równe 100% - spróbuj jescze raz! </p>
+          </li>
+          <li>
+            <span
+          class="material-symbols-outlined"
+          (click)="newgda()"
+          *ngIf="editgda"
+        >
+          done
+        </span>
+        <span
+          class="material-symbols-outlined"
+          (click)="stopgdaediting()"
+          *ngIf="editgda"
+        >
+          clear
+        </span>
+
+          </li>
+        </ul>
+
+
+      </div>
     </div>
   </mat-grid-tile>
 
-  <mat-grid-tile colspan="3">
-    <div class="chart">
-      <apx-chart
-        [series]="chartOptions.series!"
-        [chart]="chartOptions.chart!"
-        [xaxis]="chartOptions.xaxis!"
-        [title]="chartOptions.title!"
-      ></apx-chart>
-
+  <mat-grid-tile colspan="1">
+    <table>
+      <tr>
+        <th>Data pomiaru</th>
+        <th>Wartość</th>
+      </tr>
+      <tbody *ngFor="let pomiar of pomiary">
+        <td>{{ pomiar.dataodczytu }}</td>
+        <td>{{ pomiar.wartosc }}</td>
+      </tbody>
+    </table>
+    <div class="addwaga">
+      <span
+        class="material-symbols-outlined"
+        *ngIf="!addwaga"
+        (click)="startwagaediting()"
+        >add_circle</span
+      >
+      <input
+        type="date"
+        [(ngModel)]="nowypomiarwagi.dataodczytu"
+        *ngIf="addwaga"
+      />
+      <input
+        type="number"
+        [(ngModel)]="nowypomiarwagi.wartosc"
+        *ngIf="addwaga"
+      />
+      <span
+        class="material-symbols-outlined"
+        (click)="newwaga()"
+        *ngIf="addwaga"
+      >
+        done
+      </span>
+      <span
+        class="material-symbols-outlined"
+        (click)="stopwagaediting()"
+        *ngIf="addwaga"
+      >
+        clear
+      </span>
     </div>
-    <ul>
-      <li></li>
-    </ul>
-
-    </mat-grid-tile>
+  </mat-grid-tile>
 </mat-grid-list>
