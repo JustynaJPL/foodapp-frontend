@@ -1,0 +1,26 @@
+.mat-row {
+  &:hover {
+    background-color: aquamarine;
+  }
+}
+
+.actionbuttons {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  align-items: flex-start;
+  align-content: space-around;
+
+  button {
+    padding: 5px;
+  }
+
+  .edit {
+    color: var(--accent-color);
+  }
+
+  .delete {
+    color: var(--primary-color);
+  }
+}

@@ -280,47 +280,51 @@
   </mat-grid-tile>
 
   <mat-grid-tile colspan="1">
-    <table>
-      <tr>
-        <th>Data pomiaru</th>
-        <th>Wartość</th>
-      </tr>
-      <tbody *ngFor="let pomiar of pomiary">
-        <td>{{ pomiar.dataodczytu }}</td>
-        <td>{{ pomiar.wartosc }}</td>
-      </tbody>
-    </table>
-    <div class="addwaga">
-      <span
-        class="material-symbols-outlined"
-        *ngIf="!addwaga"
-        (click)="startwagaediting()"
-        >add_circle</span
-      >
-      <input
-        type="date"
-        [(ngModel)]="nowypomiarwagi.dataodczytu"
-        *ngIf="addwaga"
-      />
-      <input
-        type="number"
-        [(ngModel)]="nowypomiarwagi.wartosc"
-        *ngIf="addwaga"
-      />
-      <span
-        class="material-symbols-outlined"
-        (click)="newwaga()"
-        *ngIf="addwaga"
-      >
-        done
-      </span>
-      <span
-        class="material-symbols-outlined"
-        (click)="stopwagaediting()"
-        *ngIf="addwaga"
-      >
-        clear
-      </span>
+    <div class="wagas">
+      <table>
+        <tr>
+          <th>Data pomiaru</th>
+          <th>Wartość</th>
+        </tr>
+        <tbody *ngFor="let pomiar of pomiary">
+          <td>{{ pomiar.dataodczytu }}</td>
+          <td>{{ pomiar.wartosc }}</td>
+        </tbody>
+      </table>
+      <div class="addwaga">
+        <span
+          class="material-symbols-outlined"
+          *ngIf="!addwaga"
+          (click)="startwagaediting()"
+          >add_circle</span
+        >
+        <input
+          type="date"
+          [(ngModel)]="nowypomiarwagi.dataodczytu"
+          *ngIf="addwaga"
+        />
+        <input
+          type="number"
+          [(ngModel)]="nowypomiarwagi.wartosc"
+          *ngIf="addwaga"
+        />
+        <span
+          class="material-symbols-outlined"
+          (click)="newwaga()"
+          *ngIf="addwaga"
+        >
+          done
+        </span>
+        <span
+          class="material-symbols-outlined"
+          (click)="stopwagaediting()"
+          *ngIf="addwaga"
+        >
+          clear
+        </span>
+      </div>
+
     </div>
+
   </mat-grid-tile>
 </mat-grid-list>

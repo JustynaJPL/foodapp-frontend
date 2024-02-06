@@ -9,12 +9,16 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatSidenavModule} from '@angular/material/sidenav';
 import { AuthGuardService } from './auth-guard.service';
 import { AuthService } from './auth.service';
+import { MatFormField, MatFormFieldModule } from '@angular/material/form-field';
+import { MatTableModule } from '@angular/material/table';
+import { MatSortModule } from '@angular/material/sort';
+import { MatInputModule } from '@angular/material/input';
 
 @Component({
   selector: 'app-root',
   standalone: true,
   imports: [CommonModule, RouterModule, RouterOutlet, FooterComponent, NavigationComponent,
-    MatSidenavModule, MatButtonModule
+    MatSidenavModule, MatButtonModule, MatSortModule, MatTableModule, MatInputModule,MatFormFieldModule
     ],
   templateUrl: './app.component.html',
   schemas:[],

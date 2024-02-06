@@ -416,6 +416,7 @@ export class MySettingsComponent implements OnInit {
       .subscribe((data: any) => {
         console.log(data);
       });
+      delay(1000);
       window.location.reload();
   }
 
