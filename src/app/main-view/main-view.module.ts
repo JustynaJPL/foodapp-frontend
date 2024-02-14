@@ -12,13 +12,15 @@ import { MatFormField, MatFormFieldModule } from '@angular/material/form-field';
 import { MatTableModule } from '@angular/material/table';
 import { MatSortModule } from '@angular/material/sort';
 import { MatInputModule } from '@angular/material/input';
+import { RecipeEditNewComponent } from './recipe-edit-new/recipe-edit-new.component';
 
 
 const routes: Routes = [
   {   path: 'home',   component: HomePageComponent, canActivate:[AuthGuardService]},
   {   path: 'gen-diet',   component: GenDietComponent , canActivate:[AuthGuardService]},
+  {   path: 'recipes/:id',   component: RecipeEditNewComponent , canActivate:[AuthGuardService]},
+  {   path: 'recipes/new',   component: RecipeEditNewComponent , canActivate:[AuthGuardService]},
   {   path: 'recipes',   component: RecipesComponent , canActivate:[AuthGuardService]},
-  {   path: 'recipes/:id',   component: RecipesComponent , canActivate:[AuthGuardService]},
   {   path: 'my-settings',   component: MySettingsComponent, canActivate:[AuthGuardService]},
   {   path: '', redirectTo:'home', pathMatch:'full'}
 ];
@@ -27,7 +29,7 @@ const routes: Routes = [
 @NgModule({
   declarations: [],
   imports: [
-    CommonModule, RouterModule.forChild(routes), HttpClientModule, MatFormFieldModule, MatInputModule, MatFormFieldModule
+    CommonModule,RouterModule, RouterModule.forChild(routes), HttpClientModule, MatFormFieldModule, MatInputModule, MatFormFieldModule
   ],
   exports:[RouterModule],
   providers:[AuthGuardService, AuthService]
