@@ -4,9 +4,9 @@
   </button>
 </div>
 <div class="recipe-info">
-  <form action=""></form>
+  <!-- <form action=""></form> -->
   <div class="image-cont">
-    <img src="../assets/placeholder.jpg" alt="Italian Trulli" />
+    <img src="../assets/placeholder.jpg" alt="Italian Trulli" class="image" />
   </div>
   <div class="recipe-content">
     <div class="recipe-head">
@@ -14,6 +14,76 @@
       <h2>{{ przepis.kategoria1.data.attributes.nazwakategori }}</h2>
     </div>
     <div class="recipe-skladniks">
+      <table mat-table [dataSource]="skladniki" class="mat-elevation-z8">
+
+        <!-- nazwa Column -->
+        <ng-container matColumnDef="nazwa">
+          <th mat-header-cell *matHeaderCellDef> Nazwa produktu</th>
+          <td mat-cell *matCellDef="let element"> {{element.nazwaProduktu}} </td>
+        </ng-container>
+
+        <!-- ilosc Column -->
+        <ng-container matColumnDef="ilosc">
+          <th mat-header-cell *matHeaderCellDef> Ilość składnika </th>
+          <td mat-cell *matCellDef="let element"> {{element.ilosc}} </td>
+        </ng-container>
+
+        <!-- kcal Column -->
+        <ng-container matColumnDef="kcal">
+          <th mat-header-cell *matHeaderCellDef> Kcal/100g </th>
+          <td mat-cell *matCellDef="let element"> {{element.kcal}} </td>
+        </ng-container>
+
+        <!-- tluszcze Column -->
+        <ng-container matColumnDef="tluszcze">
+          <th mat-header-cell *matHeaderCellDef> Tłuszcze/100g </th>
+          <td mat-cell *matCellDef="let element"> {{element.tluszcze}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="weglowodany">
+          <th mat-header-cell *matHeaderCellDef> Węglowodany/100g </th>
+          <td mat-cell *matCellDef="let element"> {{element.weglowodany}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="bialko">
+          <th mat-header-cell *matHeaderCellDef> Białko/100g </th>
+          <td mat-cell *matCellDef="let element"> {{element.bialko}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="kcalperw">
+          <th mat-header-cell *matHeaderCellDef> Kcal </th>
+          <td mat-cell *matCellDef="let element"> {{element.kcalperw}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="tluszczeperw">
+          <th mat-header-cell *matHeaderCellDef> Tłuszcz </th>
+          <td mat-cell *matCellDef="let element"> {{element.tluszczeperw}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="weglowodanyperw">
+          <th mat-header-cell *matHeaderCellDef> Węglowodany </th>
+          <td mat-cell *matCellDef="let element"> {{element.weglowodanyperw}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="bialkoperw">
+          <th mat-header-cell *matHeaderCellDef> Białko </th>
+          <td mat-cell *matCellDef="let element"> {{element.bialkoperw}} </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+    </div>
+    <div class="recipe-how">
+      <h1>Instrukcja przygotowania</h1>
+      <mat-list role="list">
+        <mat-list-item role="listitem" *ngIf="przepis.instrukcja1"> {{przepis.instrukcja1}} </mat-list-item>
+        <mat-list-item role="listitem" *ngIf="przepis.instrukcja2"> {{przepis.instrukcja2}}</mat-list-item>
+        <mat-list-item role="listitem" *ngIf="przepis.instrukcja3"> {{przepis.instrukcja3}}</mat-list-item>
+        <mat-list-item role="listitem" *ngIf="przepis.instrukcja4"> {{przepis.instrukcja4}}</mat-list-item>
+        <mat-list-item role="listitem" *ngIf="przepis.instrukcja5"> {{przepis.instrukcja5}}</mat-list-item>
+        <mat-list-item role="listitem" *ngIf="przepis.instrukcja6"> {{przepis.instrukcja6}}</mat-list-item>
+      </mat-list>
 
     </div>
   </div>

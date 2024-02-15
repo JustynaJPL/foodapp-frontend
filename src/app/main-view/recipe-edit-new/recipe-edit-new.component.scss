@@ -1,7 +1,49 @@
 
 
 
-img {
-  width: 100%;
-  height: auto;
+.recipe-info {
+  display: flex;
+  display: flex;
+flex-direction: row;
+flex-wrap: wrap;
+justify-content: space-around;
+align-items: flex-start;
+align-content: flex-start;
+.image-cont {
+  width: 30%;
+  position: relative;
+  overflow: hidden;
+
+  img {
+    width: 100%;
+    height: auto;
+    display: block;
+    position: relative;
+    z-index: 1; // Ustawienie z-index zapewnia, że obraz będzie na wierzchu
+  }
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: calc(70% - 10px);
+    right: 0;  // szerokość drugiego diva + marginesy
+    background-color: rgba(255, 255, 255, 0.5); // kolor tła
+    z-index: 2; // Ustawienie z-index wyższe niż obrazu, ale niższe niż reszta zawartości
+  }
 }
+}
+
+
+
+// .recipe-content {
+//   flex: 1;
+// }
+
+
+
+// img {
+//   width: 100%;
+//   height: auto;
+// }

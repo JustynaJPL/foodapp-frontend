@@ -1,13 +1,15 @@
 import { Injectable } from '@angular/core';
 import { Przepis } from './recipes/Przepis';
 import { HttpClient} from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, map } from 'rxjs';
+import { Skladnik } from './recipe-edit-new/Skladnik';
 
 @Injectable({
   providedIn: 'root'
 })
 export class FetchDBdataService {
   private allrecipes:Przepis[] = [];
+
 
   private geturlrecipes = "http://localhost:1337/api/przepisy?populate=*";
 
@@ -94,11 +96,11 @@ export class FetchDBdataService {
             id: data.data[0].id,
             nazwaPrzepisu: data.data[0].attributes.nazwaPrzepisu,
             instrukcja1: data.data[0].attributes.instrukcja1,
-            instrukcja2: data.data[0].attributes.instrukcja2 ? data.data[0].attributes.instrukcja2 : "",
-            instrukcja3: data.data[0].attributes.instrukcja3 ? data.data[0].attributes.instrukcja3 : "",
-            instrukcja4: data.data[0].attributes.instrukcja4 ? data.data[0].attributes.instrukcja4 : "",
-            instrukcja5: data.data[0].attributes.instrukcja5 ? data.data[0].attributes.instrukcja5 : "",
-            instrukcja6: data.data[0].attributes.instrukcja6 ? data.data[0].attributes.instrukcja6 : "",
+            instrukcja2: data.data[0].attributes.instrukcja2 ? data.data[0].attributes.instrukcja2 : undefined,
+            instrukcja3: data.data[0].attributes.instrukcja3 ? data.data[0].attributes.instrukcja3 : undefined,
+            instrukcja4: data.data[0].attributes.instrukcja4 ? data.data[0].attributes.instrukcja4 : undefined,
+            instrukcja5: data.data[0].attributes.instrukcja5 ? data.data[0].attributes.instrukcja5 : undefined,
+            instrukcja6: data.data[0].attributes.instrukcja6 ? data.data[0].attributes.instrukcja6 : undefined,
             kategoria1: {
               data: {
                 attributes: {
@@ -119,14 +121,36 @@ export class FetchDBdataService {
     });
   }
 
-  getSkladniksofRecipeWithId(id:number){
-    this.http.get('http://localhost:1337/api/skladniks?filters[przepis][id][$eq]=' + id + '&populate[2]=produkt.nazwaProduktu',this.authopts)
-      .subscribe((data: any) =>{
-        console.log(data);
-        for(let i=0;i<data.length;i++){
+  getSkladniksofRecipeWithId(id: number): Observable<Skladnik[]> {
+    return this.http.get('http://localhost:1337/api/skladniks?filters[przepis][id][$eq]=' + id + '&populate[2]=produkt.nazwaProduktu', this.authopts)
+      .pipe(
+        map((response: any) => {
+          let skladniki: Skladnik[] = [];
+          for(let item of response.data) {
+            let skladnik: Skladnik = {
+              id: item.id,
+              ilosc: item.attributes.ilosc,
+              nazwaProduktu: item.attributes.produkt.data.attributes.nazwaProduktu,
+              kcal: item.attributes.produkt.data.attributes.kcal,
+              tluszcze: item.attributes.produkt.data.attributes.tluszcze,
+              weglowodany: item.attributes.produkt.data.attributes.weglowodany,
+              bialko: item.attributes.produkt.data.attributes.bialko,
+              kcalperw : item.attributes.produkt.data.attributes.kcal * item.attributes.ilosc / 100,
+              tluszczeperw : item.attributes.produkt.data.attributes.tluszcze * item.attributes.ilosc / 100,
+              weglowodanyperw :item.attributes.produkt.data.attributes.weglowodany * item.attributes.ilosc / 100,
+              bialkoperw : item.attributes.produkt.data.attributes.bialko * item.attributes.ilosc / 100
+            };
+            skladniki.push(skladnik);
+          }
 
-        }
-      });
+
+          return skladniki;
+        })
+      );
+  }
+
+  policzMakroSkladnikow(){
+
   }
 
 
