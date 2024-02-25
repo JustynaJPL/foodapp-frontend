@@ -9,6 +9,7 @@
 .all{
   height: 5vh;
   background-color: var(--dark-primary-color);
+  z-index: 3;
 }
 
 
@@ -21,4 +22,5 @@ p {
   bottom: 0;
   width: 100%;
   margin: 0;
+
 }

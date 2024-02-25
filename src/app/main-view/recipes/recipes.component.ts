@@ -27,7 +27,6 @@ import { FetchDBdataService } from "../fetch-dbdata.service";
     MatCardModule,
     MatButtonModule,
     MatPaginatorModule,
-    MatPaginatorModule,
     MatListModule,
     MatFormFieldModule,
     MatSortModule,
@@ -60,21 +59,41 @@ export class RecipesComponent {
   ];
 
   constructor(private dataservice: FetchDBdataService) {
-
     this.dataSource = new MatTableDataSource<Przepis>();
-    this.przepisy = dataservice.getAllrecipes();
+
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.dataservice.getAllrecipes().subscribe(
+      (recipes: Przepis[]) => {
+        this.przepisy = recipes;
+        this.dataSource.data = this.przepisy;
+        console.log(this.przepisy); // Możesz wyświetlić pobrane przepisy w konsoli
+      },
+      error => {
+        console.log('Wystąpił błąd podczas pobierania przepisów:', error);
+      }
+    );
+  }
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
-    this.dataSource.data = this.przepisy;
   }
 
   deleteRecipe(id: number) {
-    this.dataservice.deleteRecipeWithId(id);
+    this.dataservice.deleteRecipeWithId(id).subscribe(
+      () => {
+        // Usuń przepis z przepisów
+        this.przepisy = this.przepisy.filter(recipe => recipe.id !== id);
+        // Zaktualizuj dane w dataSource
+        this.dataSource.data = this.przepisy;
+        console.log(`Przepis o id ${id} został usunięty.`);
+      },
+      error => {
+        console.log(`Błąd podczas usuwania przepisu o id ${id}:`, error);
+      }
+    );
   }
 
   editRecipe() {}

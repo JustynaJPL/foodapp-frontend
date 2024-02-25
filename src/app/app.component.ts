@@ -14,12 +14,13 @@ import { MatTableModule } from '@angular/material/table';
 import { MatSortModule } from '@angular/material/sort';
 import { MatInputModule } from '@angular/material/input';
 import { HttpClientModule } from '@angular/common/http';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-root',
   standalone: true,
   imports: [CommonModule, RouterModule, RouterOutlet, FooterComponent, NavigationComponent,
-    MatSidenavModule, MatButtonModule, MatSortModule, MatTableModule, MatInputModule,MatFormFieldModule,
+    MatSidenavModule, MatButtonModule, MatSortModule, MatTableModule, MatInputModule, MatFormFieldModule,
     HttpClientModule
     ],
   templateUrl: './app.component.html',

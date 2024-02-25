@@ -13,12 +13,15 @@ import { MatTableModule } from '@angular/material/table';
 import { MatSortModule } from '@angular/material/sort';
 import { MatInputModule } from '@angular/material/input';
 import { RecipeEditNewComponent } from './recipe-edit-new/recipe-edit-new.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatSelectModule } from '@angular/material/select';
 
 
 const routes: Routes = [
   {   path: 'home',   component: HomePageComponent, canActivate:[AuthGuardService]},
   {   path: 'gen-diet',   component: GenDietComponent , canActivate:[AuthGuardService]},
   {   path: 'recipes/:id',   component: RecipeEditNewComponent , canActivate:[AuthGuardService]},
+  {   path: 'recipes/edit/:id',   component: RecipeEditNewComponent , canActivate:[AuthGuardService]},
   {   path: 'recipes/new',   component: RecipeEditNewComponent , canActivate:[AuthGuardService]},
   {   path: 'recipes',   component: RecipesComponent , canActivate:[AuthGuardService]},
   {   path: 'my-settings',   component: MySettingsComponent, canActivate:[AuthGuardService]},
@@ -29,7 +32,8 @@ const routes: Routes = [
 @NgModule({
   declarations: [],
   imports: [
-    CommonModule,RouterModule, RouterModule.forChild(routes), HttpClientModule, MatFormFieldModule, MatInputModule, MatFormFieldModule
+    CommonModule,RouterModule, RouterModule.forChild(routes), HttpClientModule, MatFormFieldModule,
+    MatInputModule, FormsModule, ReactiveFormsModule, MatSelectModule
   ],
   exports:[RouterModule],
   providers:[AuthGuardService, AuthService]

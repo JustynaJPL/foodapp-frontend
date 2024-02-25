@@ -55,17 +55,11 @@
         <th mat-header-cell *matHeaderCellDef mat-sort-header></th>
         <td mat-cell *matCellDef="let row">
           <div class="actionbuttons">
-            <button mat-raised-button routerLink = "{{row.id}}">
-              <span
-                class="material-symbols-outlined"
-                >search</span
-              >
+            <button mat-raised-button routerLink="{{ row.id }}">
+              <span class="material-symbols-outlined">search</span>
             </button>
-            <button mat-raised-button routerLink = "{{row.id}}">
-              <span
-                class="material-symbols-outlined edit"
-                >edit</span
-              >
+            <button mat-raised-button routerLink="edit/{{ row.id }}">
+              <span class="material-symbols-outlined edit">edit</span>
             </button>
             <button mat-raised-button>
               <span
@@ -99,5 +93,5 @@
 </div>
 
 <button mat-raised-button class="addbut">
-  <span class="material-symbols-outlined edit" routerLink = "new">add</span>
+  <span class="material-symbols-outlined edit" routerLink="new">add</span>
 </button>

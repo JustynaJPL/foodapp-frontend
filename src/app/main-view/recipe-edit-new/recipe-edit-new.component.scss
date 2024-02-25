@@ -1,49 +1,108 @@
+.back {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-items: flex-start;
+  align-content: flex-start;
+  button {
+    margin: 10px;
+    color: var(--text);
+    background-color: var(--light-primary-color);
+    border: 1px solid var(--light-primary-color);
+    font-size: 19px;
+    border-radius: 15px;
+    // padding: 15px 50px;
+    cursor: pointer;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: flex-start;
+    align-content: center;
+    span,
+    label {
+      padding: 10px;
+      cursor: pointer;
+      // font-size: 30px;
+    }
+    &:hover {
+      background-color: var(--dark-primary-color);
+      border: 1px solid var(--dark-primary-color);
+    }
+  }
+}
 
-
-
-.recipe-info {
+.recipe-info, .edit-recipe, .new-recipe {
   display: flex;
   display: flex;
-flex-direction: row;
-flex-wrap: wrap;
-justify-content: space-around;
-align-items: flex-start;
-align-content: flex-start;
-.image-cont {
-  width: 30%;
-  position: relative;
-  overflow: hidden;
-
-  img {
-    width: 100%;
-    height: auto;
-    display: block;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  align-items: flex-start;
+  align-content: flex-start;
+  height: 70vh;
+  padding: 20px;
+  .image-cont {
+    width: 35%;
     position: relative;
-    z-index: 1; // Ustawienie z-index zapewnia, że obraz będzie na wierzchu
+    overflow: hidden;
+    margin: 10px;
+
+    img {
+      width: 90%;
+      height: auto;
+      display: block;
+      position: relative;
+      // z-index: 1; // Ustawienie z-index zapewnia, że obraz będzie na wierzchu
+    }
+
+    &::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: calc(70% - 10px);
+      right: 0; // szerokość drugiego diva + marginesy
+      // background-color: rgba(255, 255, 255, 0.5); // kolor tła
+      // z-index: 2; // Ustawienie z-index wyższe niż obrazu, ale niższe niż reszta zawartości
+    }
+  }
+  .recipe-content {
+    width: 60%;
+    position: relative;
+    overflow: hidden;
+    // padding: 10px;
+    background-color: rgba(255, 255, 255, 0.5);
+    // height: 100%;
+    h1{
+      margin: 25px 0px 25px;
+      font-size: 30px;
+      color: var(--primary-color);
+    }
+    h2{
+      margin:0 20px 0;
+      color: var(--light-primary-color);
+    }
+    mat-row{
+      &:hover{
+        background-color: var(--accent-color);
+      }
+    }
+
   }
 
-  &::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: calc(70% - 10px);
-    right: 0;  // szerokość drugiego diva + marginesy
-    background-color: rgba(255, 255, 255, 0.5); // kolor tła
-    z-index: 2; // Ustawienie z-index wyższe niż obrazu, ale niższe niż reszta zawartości
-  }
-}
 }
 
+.image-cont{
 
+}
 
-// .recipe-content {
-//   flex: 1;
-// }
-
-
-
-// img {
-//   width: 100%;
-//   height: auto;
-// }
+.recipe-form{
+  display: flex;
+flex-direction: column;
+flex-wrap: wrap;
+justify-content: space-between;
+align-items: stretch;
+align-content: stretch;
+}

@@ -1,12 +1,17 @@
 <div class="back">
   <button mat-raised-button color="accent" (click)="goBack()">
-    <span class="material-symbols-outlined"> arrow_back </span>Powrót
+    <span class="material-symbols-outlined"> arrow_back </span>
+    <label for="">Powrót</label>
   </button>
 </div>
-<div class="recipe-info">
+<div class="recipe-info" *ngIf="isViewed">
   <!-- <form action=""></form> -->
   <div class="image-cont">
-    <img src="../assets/placeholder.jpg" alt="Italian Trulli" class="image" />
+    <img
+      src="{{ dburl }}{{ przepis.imageurl }}"
+      alt="Italian Trulli"
+      class="image"
+    />
   </div>
   <div class="recipe-content">
     <div class="recipe-head">
@@ -14,77 +19,217 @@
       <h2>{{ przepis.kategoria1.data.attributes.nazwakategori }}</h2>
     </div>
     <div class="recipe-skladniks">
+      <h1>Składniki przepisu:</h1>
       <table mat-table [dataSource]="skladniki" class="mat-elevation-z8">
-
         <!-- nazwa Column -->
         <ng-container matColumnDef="nazwa">
-          <th mat-header-cell *matHeaderCellDef> Nazwa produktu</th>
-          <td mat-cell *matCellDef="let element"> {{element.nazwaProduktu}} </td>
+          <th mat-header-cell *matHeaderCellDef>Nazwa produktu</th>
+          <td mat-cell *matCellDef="let element">
+            {{ element.nazwaProduktu }}
+          </td>
         </ng-container>
 
         <!-- ilosc Column -->
         <ng-container matColumnDef="ilosc">
-          <th mat-header-cell *matHeaderCellDef> Ilość składnika </th>
-          <td mat-cell *matCellDef="let element"> {{element.ilosc}} </td>
+          <th mat-header-cell *matHeaderCellDef>Ilość składnika</th>
+          <td mat-cell *matCellDef="let element">{{ element.ilosc }}</td>
         </ng-container>
 
         <!-- kcal Column -->
         <ng-container matColumnDef="kcal">
-          <th mat-header-cell *matHeaderCellDef> Kcal/100g </th>
-          <td mat-cell *matCellDef="let element"> {{element.kcal}} </td>
+          <th mat-header-cell *matHeaderCellDef>Kcal/100g</th>
+          <td mat-cell *matCellDef="let element">{{ element.kcal }}</td>
         </ng-container>
 
         <!-- tluszcze Column -->
         <ng-container matColumnDef="tluszcze">
-          <th mat-header-cell *matHeaderCellDef> Tłuszcze/100g </th>
-          <td mat-cell *matCellDef="let element"> {{element.tluszcze}} </td>
+          <th mat-header-cell *matHeaderCellDef>Tłuszcze/100g</th>
+          <td mat-cell *matCellDef="let element">{{ element.tluszcze }}</td>
         </ng-container>
 
         <ng-container matColumnDef="weglowodany">
-          <th mat-header-cell *matHeaderCellDef> Węglowodany/100g </th>
-          <td mat-cell *matCellDef="let element"> {{element.weglowodany}} </td>
+          <th mat-header-cell *matHeaderCellDef>Węglowodany/100g</th>
+          <td mat-cell *matCellDef="let element">{{ element.weglowodany }}</td>
         </ng-container>
 
         <ng-container matColumnDef="bialko">
-          <th mat-header-cell *matHeaderCellDef> Białko/100g </th>
-          <td mat-cell *matCellDef="let element"> {{element.bialko}} </td>
+          <th mat-header-cell *matHeaderCellDef>Białko/100g</th>
+          <td mat-cell *matCellDef="let element">{{ element.bialko }}</td>
         </ng-container>
 
         <ng-container matColumnDef="kcalperw">
-          <th mat-header-cell *matHeaderCellDef> Kcal </th>
-          <td mat-cell *matCellDef="let element"> {{element.kcalperw}} </td>
+          <th mat-header-cell *matHeaderCellDef>Kcal</th>
+          <td mat-cell *matCellDef="let element">{{ element.kcalperw }}</td>
         </ng-container>
 
         <ng-container matColumnDef="tluszczeperw">
-          <th mat-header-cell *matHeaderCellDef> Tłuszcz </th>
-          <td mat-cell *matCellDef="let element"> {{element.tluszczeperw}} </td>
+          <th mat-header-cell *matHeaderCellDef>Tłuszcz</th>
+          <td mat-cell *matCellDef="let element">{{ element.tluszczeperw }}</td>
         </ng-container>
 
         <ng-container matColumnDef="weglowodanyperw">
-          <th mat-header-cell *matHeaderCellDef> Węglowodany </th>
-          <td mat-cell *matCellDef="let element"> {{element.weglowodanyperw}} </td>
+          <th mat-header-cell *matHeaderCellDef>Węglowodany</th>
+          <td mat-cell *matCellDef="let element">
+            {{ element.weglowodanyperw }}
+          </td>
         </ng-container>
 
         <ng-container matColumnDef="bialkoperw">
-          <th mat-header-cell *matHeaderCellDef> Białko </th>
-          <td mat-cell *matCellDef="let element"> {{element.bialkoperw}} </td>
+          <th mat-header-cell *matHeaderCellDef>Białko</th>
+          <td mat-cell *matCellDef="let element">{{ element.bialkoperw }}</td>
         </ng-container>
 
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
       </table>
     </div>
     <div class="recipe-how">
       <h1>Instrukcja przygotowania</h1>
       <mat-list role="list">
-        <mat-list-item role="listitem" *ngIf="przepis.instrukcja1"> {{przepis.instrukcja1}} </mat-list-item>
-        <mat-list-item role="listitem" *ngIf="przepis.instrukcja2"> {{przepis.instrukcja2}}</mat-list-item>
-        <mat-list-item role="listitem" *ngIf="przepis.instrukcja3"> {{przepis.instrukcja3}}</mat-list-item>
-        <mat-list-item role="listitem" *ngIf="przepis.instrukcja4"> {{przepis.instrukcja4}}</mat-list-item>
-        <mat-list-item role="listitem" *ngIf="przepis.instrukcja5"> {{przepis.instrukcja5}}</mat-list-item>
-        <mat-list-item role="listitem" *ngIf="przepis.instrukcja6"> {{przepis.instrukcja6}}</mat-list-item>
+        <mat-list-item role="listitem" *ngIf="przepis.instrukcja1">
+          1. {{ przepis.instrukcja1 }}
+        </mat-list-item>
+        <mat-list-item role="listitem" *ngIf="przepis.instrukcja2">
+          2. {{ przepis.instrukcja2 }}</mat-list-item
+        >
+        <mat-list-item role="listitem" *ngIf="przepis.instrukcja3">
+          3. {{ przepis.instrukcja3 }}</mat-list-item
+        >
+        <mat-list-item role="listitem" *ngIf="przepis.instrukcja4">
+          4. {{ przepis.instrukcja4 }}</mat-list-item
+        >
+        <mat-list-item role="listitem" *ngIf="przepis.instrukcja5">
+          5. {{ przepis.instrukcja5 }}</mat-list-item
+        >
+        <mat-list-item role="listitem" *ngIf="przepis.instrukcja6">
+          6. {{ przepis.instrukcja6 }}</mat-list-item
+        >
       </mat-list>
-
     </div>
   </div>
 </div>
+
+<div class="edit-recipe" *ngIf="isEdited">EDIT</div>
+
+<div class="new-recipe" *ngIf="isNew">
+  <div class="image-cont">
+    <input type="file" (change)="handleFileInput($event)" accept="image" />
+    <img
+      [src]="imageUrl ? imageUrl : '../assets/placeholder.jpg'"
+      alt="Wybrane zdjęcie"
+      class="image"
+    />
+  </div>
+  <div class="recipe-content">
+    <h1>Dodaj nowy przepis</h1>
+    <form class="recipe-form" (ngSubmit)="submitForm()" >
+      <mat-form-field>
+        <mat-label>Nazwa przepisu</mat-label>
+        <input matInput placeholder="Np. Owsianka z malinami" value="sushi" [(ngModel)]="przepis.nazwaPrzepisu" name="nazwaPrzepisu" required/>
+      </mat-form-field>
+      <mat-form-field>
+          <mat-label>Wybierz kategorię</mat-label>
+          <mat-select>
+            @for (kat of kategorie; track kat) {
+            <mat-option [value]="przepis.kategoria1">{{ kat }}</mat-option>
+            }
+          </mat-select>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Wybierz produkty</mat-label>
+        <mat-select>
+          @for (prod of produkty; track prod) {
+          <mat-option [value]="prod.nazwaProduktu">{{ prod.nazwaProduktu }}</mat-option>
+          }
+        </mat-select>
+    </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>1</mat-label>
+        <textarea
+          matInput
+          cdkTextareaAutosize
+          #autosize="cdkTextareaAutosize"
+          cdkAutosizeMinRows="1"
+          cdkAutosizeMaxRows="5"
+          [(ngModel)]="przepis.instrukcja1"
+          name="instrukcja1"
+          (ngModelChange)="touchedtextarea(1)"
+          required
+          (blur)="handleBlur($event,2)"
+        ></textarea>
+      </mat-form-field>
+      <mat-form-field *ngIf="instr2">
+        <mat-label>2</mat-label>
+        <textarea
+          matInput
+          cdkTextareaAutosize
+          #autosize="cdkTextareaAutosize"
+          cdkAutosizeMinRows="1"
+          cdkAutosizeMaxRows="5"
+          name="instrukcja2"
+          [(ngModel)]="przepis.instrukcja2"
+          (ngModelChange)="touchedtextarea(2)"
+          (blur)="handleBlur($event,2)"
+        ></textarea>
+      </mat-form-field>
+      <mat-form-field *ngIf="instr3">
+        <mat-label>3</mat-label>
+        <textarea
+          matInput
+          cdkTextareaAutosize
+          #autosize="cdkTextareaAutosize"
+          cdkAutosizeMinRows="1"
+          cdkAutosizeMaxRows="5"
+          name="instrukcja3"
+          [(ngModel)]="przepis.instrukcja3"
+          (blur)="handleBlur($event,3)"
+          (ngModelChange)="touchedtextarea(3)"
+        ></textarea>
+      </mat-form-field>
+      <mat-form-field *ngIf="instr4">
+        <mat-label>4</mat-label>
+        <textarea
+          matInput
+          cdkTextareaAutosize
+          #autosize="cdkTextareaAutosize"
+          cdkAutosizeMinRows="1"
+          cdkAutosizeMaxRows="5"
+          name="instrukcja4"
+          [(ngModel)]="przepis.instrukcja4"
+          (ngModelChange)="touchedtextarea(4)"
+          (blur)="handleBlur($event,4)"
+        ></textarea>
+      </mat-form-field>
+      <mat-form-field *ngIf="instr5">
+        <mat-label>5</mat-label>
+        <textarea
+          matInput
+          cdkTextareaAutosize
+          #autosize="cdkTextareaAutosize"
+          cdkAutosizeMinRows="1"
+          cdkAutosizeMaxRows="5"
+          name="instrukcja5"
+          [(ngModel)]="przepis.instrukcja5"
+          (ngModelChange)="touchedtextarea(5)"
+          (blur)="handleBlur($event,5)"
+        ></textarea>
+      </mat-form-field>
+      <mat-form-field *ngIf="instr6">
+        <mat-label>6</mat-label>
+        <textarea
+          matInput
+          cdkTextareaAutosize
+          #autosize="cdkTextareaAutosize"
+          cdkAutosizeMinRows="1"
+          cdkAutosizeMaxRows="5"
+          name="instrukcja6"
+          [(ngModel)]="przepis.instrukcja6"
+          (blur)="handleBlur($event,6)"
+        ></textarea>
+      </mat-form-field>
+      <button type="submit">Dodaj przepis</button>
+    </form>
+  </div>
+</div>
+

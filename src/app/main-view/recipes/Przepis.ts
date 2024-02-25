@@ -21,4 +21,5 @@ export interface Przepis {
     tluszcze: number;
     weglowodany: number;
   };
+  imageurl?:string;
 }
