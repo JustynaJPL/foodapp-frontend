@@ -11,7 +11,7 @@ import { MatListModule } from "@angular/material/list";
 import { FormBuilder, FormGroup, FormsModule } from "@angular/forms";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatInputModule } from "@angular/material/input";
-import { MatSelectModule } from "@angular/material/select";
+import { MatSelectChange, MatSelectModule } from "@angular/material/select";
 import { Produkt } from "./Produkt";
 import { MatPaginator, MatPaginatorModule } from "@angular/material/paginator";
 // import { FormData } from 'formdata-node';
@@ -35,6 +35,8 @@ import { MatPaginator, MatPaginatorModule } from "@angular/material/paginator";
   styleUrl: "./recipe-edit-new.component.scss",
 })
 export class RecipeEditNewComponent {
+[x: string]: any;
+
   selectedFile!: File;
 
   przepis!: Przepis;
@@ -67,6 +69,7 @@ export class RecipeEditNewComponent {
   instr6: boolean = false;
 
   produkty:Produkt[] = [];
+
 
   constructor(
     private route: ActivatedRoute,
@@ -235,6 +238,29 @@ export class RecipeEditNewComponent {
       }
     }
   }
+
+  onProductSelected(event: MatSelectChange,i:number) {
+    const selectedProduct = event.value;
+    let temp:Produkt = this.produkty.find(({ nazwaProduktu }) => nazwaProduktu === selectedProduct)!;
+    let tempskladnik:Skladnik = {
+      id:temp.id,
+      ilosc:0,
+      nazwaProduktu:temp.nazwaProduktu,
+      kcal:temp.kcal,
+      tluszcze:temp.tluszcze,
+      weglowodany:temp.weglowodany,
+      bialko:temp.bialko
+    }
+    this.skladniki[i] = tempskladnik;
+    console.log(this.skladniki);
+    }
+
+    addskladnik(){
+      let temp:Skladnik = {
+        id:0,ilosc:0,nazwaProduktu:'',kcal:0,tluszcze:0,weglowodany:0,bialko:0
+      };
+      this.skladniki.push(temp);
+    }
 
 
 

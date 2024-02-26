@@ -15,7 +15,7 @@ export class FetchDBdataService {
 
 
   private geturlrecipes = "http://localhost:1337/api/przepisy?populate=*";
-  private geturlprodukts = "http://localhost:1337/api/produkts"
+  private geturlprodukts = "http://localhost:1337/api/produkts?populate=*"
 
   private authopts = {
     headers: { Authorization: `Bearer ${localStorage.getItem("token")}`},

@@ -122,27 +122,71 @@
   </div>
   <div class="recipe-content">
     <h1>Dodaj nowy przepis</h1>
-    <form class="recipe-form" (ngSubmit)="submitForm()" >
+    <form class="recipe-form" (ngSubmit)="submitForm()">
       <mat-form-field>
         <mat-label>Nazwa przepisu</mat-label>
-        <input matInput placeholder="Np. Owsianka z malinami" value="sushi" [(ngModel)]="przepis.nazwaPrzepisu" name="nazwaPrzepisu" required/>
+        <input
+          matInput
+          placeholder="Np. Owsianka z malinami"
+          value="sushi"
+          [(ngModel)]="przepis.nazwaPrzepisu"
+          name="nazwaPrzepisu"
+          required
+        />
       </mat-form-field>
       <mat-form-field>
-          <mat-label>Wybierz kategorię</mat-label>
-          <mat-select>
-            @for (kat of kategorie; track kat) {
-            <mat-option [value]="przepis.kategoria1">{{ kat }}</mat-option>
-            }
-          </mat-select>
-      </mat-form-field>
-      <mat-form-field>
-        <mat-label>Wybierz produkty</mat-label>
+        <mat-label>Wybierz kategorię</mat-label>
         <mat-select>
-          @for (prod of produkty; track prod) {
-          <mat-option [value]="prod.nazwaProduktu">{{ prod.nazwaProduktu }}</mat-option>
+          @for (kat of kategorie; track kat) {
+          <mat-option [value]="przepis.kategoria1">{{ kat }}</mat-option>
           }
         </mat-select>
-    </mat-form-field>
+      </mat-form-field>
+
+      <div class="produkty">
+        <ng-container *ngFor="let skl of skladniki; let i = index;">
+        <mat-form-field >
+          <mat-label>Wybierz produkt</mat-label>
+          <mat-select (selectionChange)="onProductSelected($event,i)" [value]="skl.nazwaProduktu">
+            <mat-option *ngFor="let prod of produkty; let j = index;" [value]="prod.nazwaProduktu">
+              {{ prod.nazwaProduktu }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Ilość[g]</mat-label>
+          <input
+            matInput
+            placeholder="100"
+            [(ngModel)]="skl.ilosc"
+            name="iloscskladnika"
+            required
+          />
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label> Kcal na 100g</mat-label>
+          <input matInput disabled [value]="skl.kcal" >
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label> Tłuszcze na 100g </mat-label>
+          <input matInput disabled [value]="skl.tluszcze" >
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label> Węglowodany na 100g </mat-label>
+          <input matInput disabled [value]="skl.weglowodany" >
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label> Białko na 100g </mat-label>
+          <input matInput disabled [value]="skl.bialko" >
+        </mat-form-field>
+
+
+
+
+      </ng-container>
+
+      </div>
+      <button mat-raised-button color="primary" (click)="addskladnik()">+</button>
 
       <mat-form-field>
         <mat-label>1</mat-label>
@@ -156,7 +200,7 @@
           name="instrukcja1"
           (ngModelChange)="touchedtextarea(1)"
           required
-          (blur)="handleBlur($event,2)"
+          (blur)="handleBlur($event, 2)"
         ></textarea>
       </mat-form-field>
       <mat-form-field *ngIf="instr2">
@@ -170,7 +214,7 @@
           name="instrukcja2"
           [(ngModel)]="przepis.instrukcja2"
           (ngModelChange)="touchedtextarea(2)"
-          (blur)="handleBlur($event,2)"
+          (blur)="handleBlur($event, 2)"
         ></textarea>
       </mat-form-field>
       <mat-form-field *ngIf="instr3">
@@ -183,7 +227,7 @@
           cdkAutosizeMaxRows="5"
           name="instrukcja3"
           [(ngModel)]="przepis.instrukcja3"
-          (blur)="handleBlur($event,3)"
+          (blur)="handleBlur($event, 3)"
           (ngModelChange)="touchedtextarea(3)"
         ></textarea>
       </mat-form-field>
@@ -198,7 +242,7 @@
           name="instrukcja4"
           [(ngModel)]="przepis.instrukcja4"
           (ngModelChange)="touchedtextarea(4)"
-          (blur)="handleBlur($event,4)"
+          (blur)="handleBlur($event, 4)"
         ></textarea>
       </mat-form-field>
       <mat-form-field *ngIf="instr5">
@@ -212,7 +256,7 @@
           name="instrukcja5"
           [(ngModel)]="przepis.instrukcja5"
           (ngModelChange)="touchedtextarea(5)"
-          (blur)="handleBlur($event,5)"
+          (blur)="handleBlur($event, 5)"
         ></textarea>
       </mat-form-field>
       <mat-form-field *ngIf="instr6">
@@ -225,11 +269,10 @@
           cdkAutosizeMaxRows="5"
           name="instrukcja6"
           [(ngModel)]="przepis.instrukcja6"
-          (blur)="handleBlur($event,6)"
+          (blur)="handleBlur($event, 6)"
         ></textarea>
       </mat-form-field>
       <button type="submit">Dodaj przepis</button>
     </form>
   </div>
 </div>
-
