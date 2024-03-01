@@ -106,3 +106,40 @@ justify-content: space-between;
 align-items: stretch;
 align-content: stretch;
 }
+
+.produkty {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between; /* Rozłożenie elementów na szerokość */
+
+
+  .perportion {
+    width: 100%; /* Szerokość kontenera */
+    display: flex;
+    justify-content: space-between; /* Rozłożenie elementów na szerokość */
+
+  }
+
+  mat-form-field {
+    width: 48%; /* Szerokość elementów formularza */
+    margin-bottom: 10px; /* Margines dolny między elementami */
+  }
+  .perp {
+    width: 15%; /* Szerokość elementów formularza w kontenerze perportion */
+  }
+  button{
+    width: 15%;
+    margin-bottom: 40px;
+  }
+
+
+
+}
+
+
+
+
+
+
+
+

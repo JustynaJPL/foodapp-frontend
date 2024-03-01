@@ -134,6 +134,11 @@
           required
         />
       </mat-form-field>
+
+      <!-- <mat-divider></mat-divider> -->
+      <div class="divider-text">
+        <h1>Kategoria przepisu</h1>
+      </div>
       <mat-form-field>
         <mat-label>Wybierz kategorię</mat-label>
         <mat-select>
@@ -143,50 +148,90 @@
         </mat-select>
       </mat-form-field>
 
-      <div class="produkty">
-        <ng-container *ngFor="let skl of skladniki; let i = index;">
-        <mat-form-field >
-          <mat-label>Wybierz produkt</mat-label>
-          <mat-select (selectionChange)="onProductSelected($event,i)" [value]="skl.nazwaProduktu">
-            <mat-option *ngFor="let prod of produkty; let j = index;" [value]="prod.nazwaProduktu">
-              {{ prod.nazwaProduktu }}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-        <mat-form-field>
-          <mat-label>Ilość[g]</mat-label>
-          <input
-            matInput
-            placeholder="100"
-            [(ngModel)]="skl.ilosc"
-            name="iloscskladnika"
-            required
-          />
-        </mat-form-field>
-        <mat-form-field>
-          <mat-label> Kcal na 100g</mat-label>
-          <input matInput disabled [value]="skl.kcal" >
-        </mat-form-field>
-        <mat-form-field>
-          <mat-label> Tłuszcze na 100g </mat-label>
-          <input matInput disabled [value]="skl.tluszcze" >
-        </mat-form-field>
-        <mat-form-field>
-          <mat-label> Węglowodany na 100g </mat-label>
-          <input matInput disabled [value]="skl.weglowodany" >
-        </mat-form-field>
-        <mat-form-field>
-          <mat-label> Białko na 100g </mat-label>
-          <input matInput disabled [value]="skl.bialko" >
-        </mat-form-field>
-
-
-
-
-      </ng-container>
-
+      <!-- <mat-divider></mat-divider> -->
+      <div class="divider-text">
+        <h1>Składniki przepisu</h1>
       </div>
-      <button mat-raised-button color="primary" (click)="addskladnik()">+</button>
+
+      <div class="produkty">
+        <ng-container *ngFor="let skl of skladniki; let i = index">
+          <mat-form-field>
+            <mat-label>Wybierz produkt</mat-label>
+            <mat-select
+              (selectionChange)="onProductSelected($event, i)"
+              [value]="skl.nazwaProduktu"
+            >
+              <mat-option
+                *ngFor="let prod of produkty; let j = index"
+                [value]="prod.nazwaProduktu"
+              >
+                {{ prod.nazwaProduktu }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>Ilość[g]</mat-label>
+            <input
+              matInput
+              type="number"
+              placeholder="100"
+              [(ngModel)]="skl.ilosc"
+              name="iloscskladnika"
+              required
+              (blur)="makecalculations(i)"
+              (keydown)="onInputKeyDown($event)"
+            />
+          </mat-form-field>
+          <!-- <ng-container class="per100">
+            <mat-form-field>
+              <mat-label> Kcal na 100g</mat-label>
+              <input matInput disabled [value]="skl.kcal" />
+            </mat-form-field>
+            <mat-form-field>
+              <mat-label> Tłuszcze na 100g </mat-label>
+              <input matInput disabled [value]="skl.tluszcze" />
+            </mat-form-field>
+            <mat-form-field>
+              <mat-label> Węglowodany na 100g </mat-label>
+              <input matInput disabled [value]="skl.weglowodany" />
+            </mat-form-field>
+            <mat-form-field>
+              <mat-label> Białko na 100g </mat-label>
+              <input matInput disabled [value]="skl.bialko" />
+            </mat-form-field>
+          </ng-container> -->
+          <ng-container class="perportion">
+            <mat-form-field class="perp">
+              <mat-label> Kcal w porcji</mat-label>
+              <input matInput disabled [value]="skl.kcalperw" />
+            </mat-form-field>
+            <mat-form-field class="perp">
+              <mat-label> Tłuszcze w porcji </mat-label>
+              <input matInput disabled [value]="skl.tluszczeperw" />
+            </mat-form-field>
+            <mat-form-field class="perp">
+              <mat-label> Węglowodany w porcji </mat-label>
+              <input matInput disabled [value]="skl.weglowodanyperw" />
+            </mat-form-field>
+            <mat-form-field class="perp">
+              <mat-label> Białko w porcji </mat-label>
+              <input matInput disabled [value]="skl.bialkoperw" />
+            </mat-form-field>
+          </ng-container>
+            <button mat-raised-button color="primary" (click)="deleteskladnik(i)">
+              <span class="material-symbols-outlined"> delete </span>
+            </button>
+
+        </ng-container>
+      </div>
+      <button mat-raised-button color="primary" (click)="addskladnik()" class="perp">
+        +
+      </button>
+
+      <!-- <mat-divider></mat-divider> -->
+      <div class="divider-text">
+        <h1>Czynności:</h1>
+      </div>
 
       <mat-form-field>
         <mat-label>1</mat-label>

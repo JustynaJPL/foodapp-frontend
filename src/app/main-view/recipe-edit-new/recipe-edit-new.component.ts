@@ -14,6 +14,7 @@ import { MatInputModule } from "@angular/material/input";
 import { MatSelectChange, MatSelectModule } from "@angular/material/select";
 import { Produkt } from "./Produkt";
 import { MatPaginator, MatPaginatorModule } from "@angular/material/paginator";
+import { MatDivider, MatDividerModule } from "@angular/material/divider";
 // import { FormData } from 'formdata-node';
 // import fetch, { blobFrom } from 'node-fetch';
 
@@ -29,7 +30,8 @@ import { MatPaginator, MatPaginatorModule } from "@angular/material/paginator";
     MatFormFieldModule,
     MatSelectModule,
     MatInputModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    MatDividerModule
   ],
   templateUrl: "./recipe-edit-new.component.html",
   styleUrl: "./recipe-edit-new.component.scss",
@@ -249,7 +251,8 @@ export class RecipeEditNewComponent {
       kcal:temp.kcal,
       tluszcze:temp.tluszcze,
       weglowodany:temp.weglowodany,
-      bialko:temp.bialko
+      bialko:temp.bialko,
+      kcalperw:0,tluszczeperw:0,weglowodanyperw:0,bialkoperw:0
     }
     this.skladniki[i] = tempskladnik;
     console.log(this.skladniki);
@@ -257,10 +260,32 @@ export class RecipeEditNewComponent {
 
     addskladnik(){
       let temp:Skladnik = {
-        id:0,ilosc:0,nazwaProduktu:'',kcal:0,tluszcze:0,weglowodany:0,bialko:0
+        id:0,ilosc:0,nazwaProduktu:'',kcal:0,tluszcze:0,weglowodany:0,bialko:0,
+        kcalperw:0,tluszczeperw:0,weglowodanyperw:0,bialkoperw:0
       };
       this.skladniki.push(temp);
     }
+
+    deleteskladnik(iter:number){
+      this.skladniki.splice(iter,1);
+    }
+
+    makecalculations(iter:number){
+      this.skladniki[iter].bialkoperw =Number((this.skladniki[iter].bialko * this.skladniki[iter].ilosc/100).toFixed(2));
+      this.skladniki[iter].weglowodanyperw =Number(( this.skladniki[iter].weglowodany * this.skladniki[iter].ilosc/100).toFixed(2));
+      this.skladniki[iter].tluszczeperw = Number((this.skladniki[iter].tluszcze * this.skladniki[iter].ilosc/100).toFixed(2));
+      this.skladniki[iter].kcalperw = Number(( this.skladniki[iter].kcal * this.skladniki[iter].ilosc/100).toFixed(2));
+    }
+
+    onInputKeyDown(event: KeyboardEvent) {
+      const keyCode = event.keyCode;
+
+      // Sprawdź, czy wprowadzany znak nie jest cyfrą (kody klawiszy dla cyfr od 0 do 9: 48-57)
+      if ((keyCode < 48 || keyCode > 57) && keyCode !== 8 && keyCode !== 46) {
+          // Zatrzymaj propagację zdarzenia, jeśli wprowadzony znak nie jest cyfrą
+          event.preventDefault();
+      }
+  }
 
 
 
