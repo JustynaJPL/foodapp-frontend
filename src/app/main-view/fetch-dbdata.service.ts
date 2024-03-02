@@ -31,6 +31,15 @@ export class FetchDBdataService {
   private getkategoriesurl:string = "http://localhost:1337/api/kategories";
   private DBuploadURL: string = 'http://localhost:1337/api/upload';
 
+  private _dburl: string = "http://localhost:1337";
+
+  public get dburl(): string {
+    return this._dburl;
+  }
+  public set dburl(value: string) {
+    this._dburl = value;
+  }
+
    // http://localhost:1337/api/przepisy?filters[id][$eq]=5&populate=*
   //wartość żeby wyciągnąc całe dane z przepisu
 
@@ -123,7 +132,7 @@ export class FetchDBdataService {
               tluszcze: data.data[0].attributes.gda.tluszcze,
               weglowodany: data.data[0].attributes.gda.weglowodany,
             },
-            imageurl: data.data[0].attributes.przepisimg.data.attributes.url
+            imageurl: data.data[0].attributes.przepisimg.data ? data.data[0].attributes.przepisimg.data.attributes.url : undefined
           };
           observer.next(p); // przekazujemy wartość do obserwatora
           observer.complete(); // informujemy, że operacja się zakończyła

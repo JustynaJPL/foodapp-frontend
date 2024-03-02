@@ -15,14 +15,16 @@ import { MatInputModule } from '@angular/material/input';
 import { RecipeEditNewComponent } from './recipe-edit-new/recipe-edit-new.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
+import { CreateNewRecipeComponent } from './create-new-recipe/create-new-recipe.component';
+import { EditRecipeComponent } from './edit-recipe/edit-recipe.component';
 
 
 const routes: Routes = [
   {   path: 'home',   component: HomePageComponent, canActivate:[AuthGuardService]},
   {   path: 'gen-diet',   component: GenDietComponent , canActivate:[AuthGuardService]},
+  {   path: 'recipes/new',   component: CreateNewRecipeComponent , canActivate:[AuthGuardService]},
+  {   path: 'recipes/edit/:id',   component: EditRecipeComponent , canActivate:[AuthGuardService]},
   {   path: 'recipes/:id',   component: RecipeEditNewComponent , canActivate:[AuthGuardService]},
-  {   path: 'recipes/edit/:id',   component: RecipeEditNewComponent , canActivate:[AuthGuardService]},
-  {   path: 'recipes/new',   component: RecipeEditNewComponent , canActivate:[AuthGuardService]},
   {   path: 'recipes',   component: RecipesComponent , canActivate:[AuthGuardService]},
   {   path: 'my-settings',   component: MySettingsComponent, canActivate:[AuthGuardService]},
   {   path: '', redirectTo:'home', pathMatch:'full'}
