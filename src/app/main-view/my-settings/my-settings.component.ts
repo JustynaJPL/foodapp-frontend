@@ -1,28 +1,20 @@
-import { Component, OnInit, TemplateRef, ViewChild } from "@angular/core";
-import { CommonModule, NgIfContext } from "@angular/common";
+import { Component, OnInit, ViewChild } from "@angular/core";
+import { CommonModule } from "@angular/common";
 import {
   ChartComponent,
-  ApexAxisChartSeries,
   ApexChart,
-  ApexXAxis,
-  ApexTitleSubtitle,
   NgApexchartsModule,
 } from "ng-apexcharts";
-import ApexCharts from "apexcharts";
 import { MatGridListModule } from "@angular/material/grid-list";
 import { MatDividerModule } from "@angular/material/divider";
 import { MatButtonModule } from "@angular/material/button";
 import { MatCardModule } from "@angular/material/card";
 import { MatIconModule } from "@angular/material/icon";
 import { MatProgressBarModule } from "@angular/material/progress-bar";
-import { LogService } from "../../logger/log.service";
-import { MySettingsDataService } from "./my-settings-data.service";
 import { HttpErrorResponse, HttpClient } from "@angular/common/http";
-import { Observable, catchError, delay, last, map, of, take } from "rxjs";
-import { param } from "jquery";
-import qs from "qs";
+import { Observable, delay, of } from "rxjs";
 import { FormsModule } from "@angular/forms";
-import { MatFormField, MatFormFieldModule } from "@angular/material/form-field";
+import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatDatepickerModule } from "@angular/material/datepicker";
 import { MatInputModule } from "@angular/material/input";
 
@@ -338,8 +330,8 @@ export class MySettingsComponent implements OnInit {
 
     this.http
       .put(
-        "http://localhost:1337/api/wagas/",
-        { dataodczytu: this.userData.height },
+        puturl,
+        { height: this.userData.height },
         this.putopts
       )
       .subscribe((data: any) => {

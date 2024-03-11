@@ -1,18 +1,18 @@
 import { Component } from "@angular/core";
 import { CommonModule } from "@angular/common";
-import { Przepis } from "../recipes/Przepis";
+import { Przepis } from "../model/Przepis";
 import { ActivatedRoute } from "@angular/router";
 import { Location } from "@angular/common";
 import { MatGridListModule } from "@angular/material/grid-list";
 import { FetchDBdataService } from "../fetch-dbdata.service";
-import { Skladnik } from "./Skladnik";
+import { Skladnik } from "../model/Skladnik";
 import { MatTableModule } from "@angular/material/table";
 import { MatListModule } from "@angular/material/list";
 import { FormBuilder, FormsModule } from "@angular/forms";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatInputModule } from "@angular/material/input";
 import { MatSelectModule } from "@angular/material/select";
-import { Produkt } from "./Produkt";
+import { Produkt } from "../model/Produkt";
 import { MatPaginatorModule } from "@angular/material/paginator";
 import { MatDividerModule } from "@angular/material/divider";
 
@@ -71,6 +71,7 @@ export class RecipeEditNewComponent {
       kategoria1: {
         data: {
           attributes: {
+            id:0,
             nazwakategori: "",
           },
         },

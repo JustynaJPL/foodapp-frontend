@@ -11,6 +11,7 @@ export interface Przepis {
   kategoria1: {
     data: {
       attributes: {
+        id:number;
         nazwakategori: string;
       };
     };
@@ -22,4 +23,5 @@ export interface Przepis {
     weglowodany: number;
   };
   imageurl?:string;
+  imageId?:number;
 }

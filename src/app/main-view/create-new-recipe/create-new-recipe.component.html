@@ -7,7 +7,10 @@
 
 <div class="new-recipe">
   <div class="image-cont">
-    <input type="file" (change)="handleFileInput($event)" accept="image" />
+    <input type="file" (change)="handleFileInput($event)" accept="image" name="image" required/>
+    <mat-error *ngIf="notchoosenimage">
+      Zdjęcie jest wymagane
+    </mat-error>
     <img
       [src]=" imageUrl ? imageUrl : '../assets/placeholder.jpg' "
       alt="Wybrane zdjęcie"
@@ -22,33 +25,42 @@
         <input
           matInput
           placeholder="Np. Owsianka z malinami"
-          value="sushi"
           [(ngModel)]="przepis.nazwaPrzepisu"
           name="nazwaPrzepisu"
           required
         />
+        <mat-error *ngIf="formGroup.get('nazwaPrzepisu').hasError('required')">
+          Nazwa przepisu jest wymagana
+        </mat-error>
       </mat-form-field>
 
-      <!-- <mat-divider></mat-divider> -->
+
       <div class="divider-text">
         <h1>Kategoria przepisu</h1>
       </div>
       <mat-form-field>
         <mat-label>Wybierz kategorię</mat-label>
-        <mat-select>
-          @for (kat of kategorie; track kat) {
-          <mat-option [value]="przepis.kategoria1">{{ kat }}</mat-option>
-          }
-        </mat-select>
-      </mat-form-field>
+        <mat-select (selectionChange)="onKategoriaSelected($event.value)" name="kategoria" required >
+          <mat-option *ngFor="let kat of kategorie; let i = index"
+          [value]="kat.nazwa">
+          {{ kat.nazwa }}
+        </mat-option>
 
-      <!-- <mat-divider></mat-divider> -->
+        </mat-select>
+
+      </mat-form-field>
+      <!--  -->
+      <mat-error *ngIf="nokategoria">
+        Kategoria przepisu musi być wybrana
+      </mat-error>
+
+
+
       <div class="divider-text">
         <h1>Składniki przepisu</h1>
       </div>
-
       <div class="produkty">
-        <ng-container *ngFor="let skl of skladniki; let i = index">
+        <ng-container *ngFor="let skl of skladniki; let i = index" name="produkty">
           <mat-form-field>
             <mat-label>Wybierz produkt</mat-label>
             <mat-select
@@ -72,9 +84,13 @@
               [(ngModel)]="skl.ilosc"
               name="iloscskladnika"
               required
+              min="0"
               (blur)="makecalculations(i)"
               (keydown)="onInputKeyDown($event)"
             />
+            <mat-error *ngIf="formGroup.get('iloscskladnika').hasError('required')">
+              Ilość składnika musi być określona
+            </mat-error>
           </mat-form-field>
           <ng-container >
             <mat-form-field class="per100">
@@ -118,11 +134,13 @@
 
         </ng-container>
       </div>
-      <button mat-raised-button color="primary" (click)="addskladnik()" class="perp">
+      <button mat-raised-button color="primary" type ="button" (click)="addskladnik()" class="perp">
         +
       </button>
+      <mat-error *ngIf="noskaldniks">
+        Musi być dodany chociaż jeden składnik
+      </mat-error>
 
-      <!-- <mat-divider></mat-divider> -->
       <div class="divider-text">
         <h1>Czynności:</h1>
       </div>
@@ -141,6 +159,9 @@
           required
           (blur)="handleBlur($event, 2)"
         ></textarea>
+        <mat-error *ngIf="formGroup.get('instrukcja1').hasError('required')">
+          Przynajmniej jedna instrukcja musi zostać dodana
+        </mat-error>
       </mat-form-field>
       <mat-form-field *ngIf="instr2">
         <mat-label>2</mat-label>
@@ -211,7 +232,8 @@
           (blur)="handleBlur($event, 6)"
         ></textarea>
       </mat-form-field>
-      <button type="submit">Dodaj przepis</button>
+
+      <button type="submit" (click)="submitForm()">Dodaj przepis</button>
     </form>
   </div>
 </div>

@@ -2,8 +2,8 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { FetchDBdataService } from '../fetch-dbdata.service';
-import { Przepis } from '../recipes/Przepis';
-import { Skladnik } from '../recipe-edit-new/Skladnik';
+import { Przepis } from '../model/Przepis';
+import { Skladnik } from '../model/Skladnik';
 import { Location } from '@angular/common';
 
 @Component({

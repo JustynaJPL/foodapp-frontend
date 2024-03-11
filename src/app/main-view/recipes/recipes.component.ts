@@ -15,7 +15,7 @@ import {
   Router,
   RouterModule,
 } from "@angular/router";
-import { Przepis } from "./Przepis";
+import { Przepis } from "../model/Przepis";
 import { FetchDBdataService } from "../fetch-dbdata.service";
 
 @Component({
