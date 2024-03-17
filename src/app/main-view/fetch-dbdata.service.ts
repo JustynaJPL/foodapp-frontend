@@ -220,7 +220,7 @@ export class FetchDBdataService {
       };
       return this.http.post(this.skladniksurl, body, this.authopts).pipe(
         catchError((error) => {
-          console.error("Wystąpił błąd podczas przypisywania pliku do przepisu w Strapi.", error);
+          console.error("Wystąpił błąd podczas przypisywania składnika do przepisu w Strapi.", error);
           throw error;
         })
       );
@@ -251,6 +251,19 @@ export class FetchDBdataService {
           };
           produkty.push(p);
         }
+        produkty.sort((a, b) => {
+          const nazwaA = a.nazwaProduktu.toUpperCase(); // ignorowanie wielkości liter
+          const nazwaB = b.nazwaProduktu.toUpperCase(); // ignorowanie wielkości liter
+
+          if (nazwaA < nazwaB) {
+            return -1; // nazwaA jest przed nazwaB
+          }
+          if (nazwaA > nazwaB) {
+            return 1; // nazwaA jest po nazwaB
+          }
+
+          return 0; // nazwy są identyczne
+        });
         return produkty;
       })
     );

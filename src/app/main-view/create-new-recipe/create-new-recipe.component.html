@@ -134,9 +134,31 @@
 
         </ng-container>
       </div>
+
       <button mat-raised-button color="primary" type ="button" (click)="addskladnik()" class="perp">
         +
       </button>
+      <div class="summary">
+        <ng-container>
+          <mat-form-field class="fin8">
+            <mat-label> Kcal całkowite</mat-label>
+            <input matInput disabled [value]='wyliczmakrodlaprzepisukcal()' />
+          </mat-form-field>
+          <mat-form-field class="fin8">
+            <mat-label> Tłuszcze całkowite </mat-label>
+            <input matInput disabled [value]="wyliczmakrodlaprzepisutluszcze()"  />
+          </mat-form-field>
+          <mat-form-field class="fin8">
+            <mat-label> Węglowodany całkowite </mat-label>
+            <input matInput disabled [value]="wyliczmakrodlaprzepisuweglowodany()" />
+          </mat-form-field>
+          <mat-form-field class="fin8">
+            <mat-label> Białko całkowite </mat-label>
+            <input matInput disabled [value]="wyliczmakrodlaprzepisubialko()"  />
+          </mat-form-field>
+        </ng-container>
+      </div>
+
       <mat-error *ngIf="noskaldniks">
         Musi być dodany chociaż jeden składnik
       </mat-error>
@@ -233,8 +255,9 @@
         ></textarea>
       </mat-form-field>
 
-      <button type="submit" (click)="submitForm()">Dodaj przepis</button>
+      <button type="submit">Dodaj przepis</button>
     </form>
+
   </div>
 </div>
 

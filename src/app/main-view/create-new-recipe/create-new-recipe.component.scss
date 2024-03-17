@@ -100,6 +100,7 @@ flex-wrap: wrap;
 justify-content: space-between;
 align-items: stretch;
 align-content: stretch;
+
 }
 
 .produkty {
@@ -132,6 +133,23 @@ align-content: stretch;
 
   }
 
+}
 
+
+
+
+.summary {
+  display: flex; // Użyjemy flexboxa, aby umożliwić wyświetlanie elementów w jednej linii
+  flex-direction: row; // Ustaw kierunek elementów na wiersz
+  justify-content: flex-end; // Rozmieść elementy równomiernie z zachowaniem jednakowej przestrzeni pomiędzy nimi
+  align-items: stretch; // Rozciągnij elementy, aby wypełniły kontener w pionie
+  .fin8 {
+    width: 15%;
+    display: inline;
+    mat-label{
+      color: var(--accent-color);
+    }
+   }
 
 }
+

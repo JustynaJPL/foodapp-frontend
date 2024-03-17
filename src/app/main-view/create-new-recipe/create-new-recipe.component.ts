@@ -1,7 +1,6 @@
 import { Component } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from "@angular/forms";
-import { MatDividerModule } from "@angular/material/divider";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatGridListModule } from "@angular/material/grid-list";
 import { MatInputModule } from "@angular/material/input";
@@ -17,6 +16,7 @@ import { FetchDBdataService } from "../fetch-dbdata.service";
 import { Location } from "@angular/common";
 import { Kategoria } from "../model/Kategoria";
 import { switchMap } from "rxjs";
+import {MatSnackBar} from '@angular/material/snack-bar';
 
 @Component({
   selector: "app-create-new-recipe",
@@ -37,6 +37,7 @@ import { switchMap } from "rxjs";
   styleUrl: "./create-new-recipe.component.scss",
 })
 export class CreateNewRecipeComponent {
+
 
   selectedFile!: File;
   przepis!: Przepis;
@@ -62,7 +63,8 @@ export class CreateNewRecipeComponent {
     private route: ActivatedRoute,
     private location: Location,
     private dbservice: FetchDBdataService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private _snackBar: MatSnackBar
   ) {
     this.przepis = {
       id: 0,
@@ -160,7 +162,7 @@ export class CreateNewRecipeComponent {
   handleBlur(event: any, val: number) {
     if (event.target.value.trim() === "") {
       // Wywołaj odpowiednią funkcję lub wykonaj odpowiednie akcje
-      console.log("Pole input" + val + " jest puste.");
+      // console.log("Pole input" + val + " jest puste.");
       switch (val) {
         case 2:
           this.instr2 = false;
@@ -271,7 +273,7 @@ export class CreateNewRecipeComponent {
     );
     this.skladniki[iter].kcalperw = Number(
       ((this.skladniki[iter].kcal * this.skladniki[iter].ilosc) / 100).toFixed(
-        2
+        0
       )
     );
   }
@@ -289,41 +291,44 @@ export class CreateNewRecipeComponent {
   private przepisid:number=0;
 
   submitForm() {
-    // this.notchoosenimage = false;
-    // this.noskaldniks = false;
-
-    if(!this.choosenimage) this.notchoosenimage = true;
-    if(this.skladniki.length ==0 ) this.noskaldniks = true;
-    if(this.przepis.kategoria1.data.attributes.nazwakategori =="") this.nokategoria = true;
+    if (!this.choosenimage) this.notchoosenimage = true;
+    if (this.skladniki.length == 0) this.noskaldniks = true;
+    if (this.przepis.kategoria1.data.attributes.nazwakategori == "") this.nokategoria = true;
+    if(this.notchoosenimage==true || this.noskaldniks == true || this.nokategoria == true) {}
     else {
       console.log("Brak błędów " + this.przepis);
 
-    this.dbservice.uploadFileToDB(this.formData).pipe(
+      this.wyliczmakrodlaprzepisu();
+      // console.log(this.przepis);
+
+      this.dbservice.uploadFileToDB(this.formData).pipe(
         switchMap(data => {
-            // Najpierw przypisujemy ID obrazu do przepisu
-            this.przepis.imageId = data[0].id;
-            // Następnie przekazujemy przepis (już z ID obrazu) do kolejnej metody w łańcuchu
-            return this.dbservice.addRecipetoDB(this.przepis, this.przepis.imageId!);
+          this.przepis.imageId = data[0].id;
+          return this.dbservice.addRecipetoDB(this.przepis, this.przepis.imageId!);
         }),
         switchMap(resp => {
-            // Po dodaniu przepisu, przypisujemy jego ID
-            this.przepisid = resp.data.id;
-            // I na koniec łączymy obraz z przepisem
-            return this.dbservice.uploadImagetoRecipeWithNumber(this.przepisid, this.przepis.imageId!);
+          this.przepisid = resp.data.id;
+          return this.dbservice.uploadImagetoRecipeWithNumber(this.przepisid, this.przepis.imageId!);
+        }),
+        switchMap(finalResp => {
+          // Tutaj dodajemy składniki do przepisu, używając przepisid jako ID przepisu
+          return this.dbservice.createSkladniksofRecipe(this.skladniki, this.przepisid);
         })
-    ).subscribe({
+      ).subscribe({
         next: (finalResp) => {
-            // Tutaj obsługujemy ostateczną odpowiedź - po pomyślnym zakończeniu całego łańcucha
-            console.log(finalResp);
-            console.log(this.przepis);
+          console.log(finalResp);
+          console.log(this.przepis);
+          this.submitedMessage("Przepis został dodany do bazy!")
+          // Możesz dodać tutaj dodatkową logikę po pomyślnym dodaniu wszystkich elementów
         },
         error: (error) => {
-            // Tutaj obsługujemy błędy, które mogą wystąpić na dowolnym etapie łańcucha
-            console.error('Wystąpił błąd podczas przetwarzania formularza', error);
+          console.error('Wystąpił błąd podczas przetwarzania formularza', error);
         }
-    });
-  }
+      });
+      this.goBack();
+    }
 }
+
 
   onKategoriaSelected(nazwa:string) {
     console.log(nazwa);
@@ -339,4 +344,65 @@ export class CreateNewRecipeComponent {
   goBack(): void {
     this.location.back();
   }
+
+  wyliczmakrodlaprzepisu(){
+    this.przepis.gda.kcal = this.wyliczmakrodlaprzepisukcal();
+    this.przepis.gda.bialka = this.wyliczmakrodlaprzepisubialko();
+    this.przepis.gda.weglowodany = this.wyliczmakrodlaprzepisuweglowodany();
+    this.przepis.gda.tluszcze = this.wyliczmakrodlaprzepisutluszcze();
+  }
+
+  wyliczmakrodlaprzepisukcal():number {
+    if(this.skladniki.length ==0) return 0;
+    else{
+      let wynik:number = 0;
+      for (let i = 0; i < this.skladniki.length; i++) {
+        wynik = wynik + this.skladniki[i].kcalperw!;
+      }
+      return wynik;
+    }
+  }
+
+  wyliczmakrodlaprzepisutluszcze():number{
+    if(this.skladniki.length ==0) return 0;
+    else{
+      let wynik:number = 0;
+      for (let i = 0; i < this.skladniki.length; i++) {
+        wynik = wynik + this.skladniki[i].tluszczeperw!;
+      }
+      return wynik;
+    }
+
+  }
+
+  wyliczmakrodlaprzepisubialko(): number {
+    if(this.skladniki.length ==0) return 0;
+    else{
+      let wynik:number = 0;
+      for (let i = 0; i < this.skladniki.length; i++) {
+        wynik = wynik + this.skladniki[i].bialkoperw!;
+      }
+      return wynik;
+    }
+
+    }
+    wyliczmakrodlaprzepisuweglowodany(): number {
+      if(this.skladniki.length ==0) return 0;
+    else{
+      let wynik:number = 0;
+      for (let i = 0; i < this.skladniki.length; i++) {
+        wynik = wynik + this.skladniki[i].weglowodanyperw!;
+      }
+      return wynik;
+    }
+
+    }
+
+    submitedMessage(message: string) {
+      this._snackBar.open(message,"ok!");
+    }
 }
+
+
+
+
