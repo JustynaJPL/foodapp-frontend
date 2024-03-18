@@ -5,259 +5,236 @@
   </button>
 </div>
 
-<div class="new-recipe">
-  <div class="image-cont">
-    <input type="file" (change)="handleFileInput($event)" accept="image" name="image" required/>
-    <mat-error *ngIf="notchoosenimage">
-      Zdjęcie jest wymagane
-    </mat-error>
-    <img
-      [src]=" imageUrl ? imageUrl : '../assets/placeholder.jpg' "
-      alt="Wybrane zdjęcie"
-      class="image"
-    />
-  </div>
+<form [formGroup]="recipeForm" class="new-recipe" (ngSubmit)="submitForm()">
+  <ng-container>
+    <div class="image-cont">
+      <input
+        type="file"
+        (change)="handleFileInput($event)"
+        accept="image"
+        name="image"
+      />
+      <mat-error *ngIf="hasError('image', 'required')">
+        Zdjęcie jest wymagane
+      </mat-error>
+      <img
+        [src]="imageUrl ? imageUrl : '../assets/placeholder.jpg'"
+        alt="Wybrane zdjęcie"
+        class="image"
+      />
+    </div>
+  </ng-container>
+
   <div class="recipe-content">
     <h1>Dodaj nowy przepis</h1>
-    <form class="recipe-form" (ngSubmit)="submitForm()">
+    <ng-container>
       <mat-form-field>
         <mat-label>Nazwa przepisu</mat-label>
         <input
           matInput
           placeholder="Np. Owsianka z malinami"
-          [(ngModel)]="przepis.nazwaPrzepisu"
-          name="nazwaPrzepisu"
-          required
+          formControlName="nazwaPrzepisu"
         />
-        <mat-error *ngIf="formGroup.get('nazwaPrzepisu').hasError('required')">
+        <mat-error *ngIf="hasError('nazwaPrzepisu', 'required')">
           Nazwa przepisu jest wymagana
         </mat-error>
       </mat-form-field>
+    </ng-container>
 
-
-      <div class="divider-text">
-        <h1>Kategoria przepisu</h1>
-      </div>
-      <mat-form-field>
-        <mat-label>Wybierz kategorię</mat-label>
-        <mat-select (selectionChange)="onKategoriaSelected($event.value)" name="kategoria" required >
-          <mat-option *ngFor="let kat of kategorie; let i = index"
-          [value]="kat.nazwa">
-          {{ kat.nazwa }}
-        </mat-option>
-
-        </mat-select>
-
-      </mat-form-field>
-      <!--  -->
-      <mat-error *ngIf="nokategoria">
-        Kategoria przepisu musi być wybrana
-      </mat-error>
-
-
-
-      <div class="divider-text">
-        <h1>Składniki przepisu</h1>
-      </div>
-      <div class="produkty">
-        <ng-container *ngFor="let skl of skladniki; let i = index" name="produkty">
-          <mat-form-field>
-            <mat-label>Wybierz produkt</mat-label>
-            <mat-select
-              (selectionChange)="onProductSelected($event, i)"
-              [value]="skl.nazwaProduktu"
+    <div class="divider-text">
+      <h1>Kategoria przepisu</h1>
+      <div formGroupName="kategoria">
+        <mat-form-field>
+          <mat-label>Wybierz kategorię</mat-label>
+          <!-- Teraz możemy bezpośrednio odwołać się do kontrolki 'nazwa' -->
+          <mat-select
+            formControlName="nazwa"
+            (selectionChange)="onKategoriaChange($event)"
+          >
+            <mat-option
+              *ngFor="let kat of kategorie; let i = index"
+              [value]="kat.nazwa"
             >
-              <mat-option
-                *ngFor="let prod of produkty; let j = index"
-                [value]="prod.nazwaProduktu"
-              >
-                {{ prod.nazwaProduktu }}
-              </mat-option>
-            </mat-select>
+              {{ kat.nazwa }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <!-- Aby sprawdzić błąd, musisz zmienić sposób dostępu do błędu -->
+        <mat-error
+          *ngIf="
+            recipeForm.get('kategoria')?.get('nazwa')?.hasError('required')
+          "
+        >
+          Kategoria przepisu musi być wybrana
+        </mat-error>
+      </div>
+    </div>
+
+    <div formArrayName="skladniki">
+      <h1>Składniki przepisu</h1>
+      <ng-container
+        *ngFor="let skladnik of skladniki.controls; let i = index"
+        [formGroupName]="i"
+      >
+        <mat-form-field>
+          <mat-label>Wybierz produkt</mat-label>
+          <mat-select
+            (selectionChange)="onProduktChange($event, i)"
+            formControlName="nazwa"
+          >
+            <mat-option
+              *ngFor="let prod of produkty; let j = index"
+              [value]="prod.nazwaProduktu"
+            >
+              {{ prod.nazwaProduktu }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Ilość[g]</mat-label>
+          <input
+            matInput
+            type="number"
+            placeholder="100"
+            formControlName="ilosc"
+            required
+            min="0"
+            (blur)="makecalculations(i)"
+            (keydown)="onInputKeyDown($event)"
+          />
+          <mat-error
+            *ngIf="skladniki.controls[i]?.get('iloscskladnika')?.errors?.['required']"
+          >
+            Ilość składnika musi być określona
+          </mat-error>
+        </mat-form-field>
+        <ng-container>
+          <mat-form-field class="per100">
+            <mat-label>Kcal</mat-label>
+            <input matInput disabled [value]="skladnik.get('kcal')?.value" />
           </mat-form-field>
-          <mat-form-field>
-            <mat-label>Ilość[g]</mat-label>
+          <mat-form-field class="per100">
+            <mat-label>Tłuszcze</mat-label>
             <input
               matInput
-              type="number"
-              placeholder="100"
-              [(ngModel)]="skl.ilosc"
-              name="iloscskladnika"
-              required
-              min="0"
-              (blur)="makecalculations(i)"
-              (keydown)="onInputKeyDown($event)"
+              disabled
+              [value]="skladnik.get('tluszcze')?.value"
             />
-            <mat-error *ngIf="formGroup.get('iloscskladnika').hasError('required')">
-              Ilość składnika musi być określona
-            </mat-error>
           </mat-form-field>
-          <ng-container >
-            <mat-form-field class="per100">
-              <mat-label>Kcal</mat-label>
-              <input matInput disabled [value]="skl.kcal" />
-            </mat-form-field>
-            <mat-form-field class="per100">
-              <mat-label>Tłuszcze</mat-label>
-              <input matInput disabled [value]="skl.tluszcze" />
-            </mat-form-field>
-            <mat-form-field class="per100">
-              <mat-label>Węglowodany</mat-label>
-              <input matInput disabled [value]="skl.weglowodany" />
-            </mat-form-field>
-            <mat-form-field class="per100">
-              <mat-label>Białko</mat-label>
-              <input matInput disabled [value]="skl.bialko" />
-            </mat-form-field>
-          </ng-container>
-          <ng-container class="perportion">
-            <mat-form-field class="perp">
-              <mat-label> Kcal w porcji</mat-label>
-              <input matInput disabled [value]="skl.kcalperw" />
-            </mat-form-field>
-            <mat-form-field class="perp">
-              <mat-label> Tłuszcze w porcji </mat-label>
-              <input matInput disabled [value]="skl.tluszczeperw" />
-            </mat-form-field>
-            <mat-form-field class="perp">
-              <mat-label> Węglowodany w porcji </mat-label>
-              <input matInput disabled [value]="skl.weglowodanyperw" />
-            </mat-form-field>
-            <mat-form-field class="perp">
-              <mat-label> Białko w porcji </mat-label>
-              <input matInput disabled [value]="skl.bialkoperw" />
-            </mat-form-field>
-          </ng-container>
-            <button mat-raised-button color="primary" (click)="deleteskladnik(i)">
-              <span class="material-symbols-outlined"> delete </span>
-            </button>
-
+          <mat-form-field class="per100">
+            <mat-label>Węglowodany</mat-label>
+            <input
+              matInput
+              disabled
+              [value]="skladnik.get('weglowodany')?.value"
+            />
+          </mat-form-field>
+          <mat-form-field class="per100">
+            <mat-label>Białko</mat-label>
+            <input matInput disabled [value]="skladnik.get('bialko')?.value" />
+          </mat-form-field>
         </ng-container>
-      </div>
+        <ng-container class="perportion">
+          <mat-form-field class="perp">
+            <mat-label> Kcal w porcji</mat-label>
+            <input
+              matInput
+              disabled
+              [value]="skladnik.get('kcalperw')?.value"
+            />
+          </mat-form-field>
+          <mat-form-field class="perp">
+            <mat-label> Tłuszcze w porcji </mat-label>
+            <input
+              matInput
+              disabled
+              [value]="skladnik.get('tluszczeperw')?.value"
+            />
+          </mat-form-field>
+          <mat-form-field class="perp">
+            <mat-label> Węglowodany w porcji </mat-label>
+            <input
+              matInput
+              disabled
+              [value]="skladnik.get('weglowodanyperw')?.value"
+            />
+          </mat-form-field>
+          <mat-form-field class="perp">
+            <mat-label> Białko w porcji </mat-label>
+            <input
+              matInput
+              disabled
+              [value]="skladnik.get('bialkoperw')?.value"
+            />
+          </mat-form-field>
+        </ng-container>
+        <button mat-raised-button color="primary" (click)="deleteSkladnik(i)">
+          <span class="material-symbols-outlined">delete</span>
+        </button>
+      </ng-container>
 
-      <button mat-raised-button color="primary" type ="button" (click)="addskladnik()" class="perp">
+      <button
+        mat-raised-button
+        color="primary"
+        type="button"
+        (click)="addSkladnik()"
+        class="perp"
+      >
         +
       </button>
-      <div class="summary">
-        <ng-container>
-          <mat-form-field class="fin8">
-            <mat-label> Kcal całkowite</mat-label>
-            <input matInput disabled [value]='wyliczmakrodlaprzepisukcal()' />
-          </mat-form-field>
-          <mat-form-field class="fin8">
-            <mat-label> Tłuszcze całkowite </mat-label>
-            <input matInput disabled [value]="wyliczmakrodlaprzepisutluszcze()"  />
-          </mat-form-field>
-          <mat-form-field class="fin8">
-            <mat-label> Węglowodany całkowite </mat-label>
-            <input matInput disabled [value]="wyliczmakrodlaprzepisuweglowodany()" />
-          </mat-form-field>
-          <mat-form-field class="fin8">
-            <mat-label> Białko całkowite </mat-label>
-            <input matInput disabled [value]="wyliczmakrodlaprzepisubialko()"  />
-          </mat-form-field>
-        </ng-container>
-      </div>
+    </div>
 
-      <mat-error *ngIf="noskaldniks">
-        Musi być dodany chociaż jeden składnik
-      </mat-error>
+    <div class="summary">
+      <ng-container>
+        <mat-form-field class="fin8">
+          <mat-label> Kcal całkowite</mat-label>
+          <input matInput disabled [value]="recipeForm.get('kcal')?.value" />
+        </mat-form-field>
+        <mat-form-field class="fin8">
+          <mat-label> Tłuszcze całkowite </mat-label>
+          <input
+            matInput
+            disabled
+            [value]="recipeForm.get('tluszcze')?.value"
+          />
+        </mat-form-field>
+        <mat-form-field class="fin8">
+          <mat-label> Węglowodany całkowite </mat-label>
+          <input
+            matInput
+            disabled
+            [value]="recipeForm.get('weglowodany')?.value"
+          />
+        </mat-form-field>
+        <mat-form-field class="fin8">
+          <mat-label> Białko całkowite </mat-label>
+          <input matInput disabled [value]="recipeForm.get('bialko')?.value" />
+        </mat-form-field>
+      </ng-container>
+    </div>
 
-      <div class="divider-text">
-        <h1>Czynności:</h1>
-      </div>
-
-      <mat-form-field>
-        <mat-label>1</mat-label>
-        <textarea
-          matInput
-          cdkTextareaAutosize
-          #autosize="cdkTextareaAutosize"
-          cdkAutosizeMinRows="1"
-          cdkAutosizeMaxRows="5"
-          [(ngModel)]="przepis.instrukcja1"
-          name="instrukcja1"
-          (ngModelChange)="touchedtextarea(1)"
-          required
-          (blur)="handleBlur($event, 2)"
-        ></textarea>
-        <mat-error *ngIf="formGroup.get('instrukcja1').hasError('required')">
-          Przynajmniej jedna instrukcja musi zostać dodana
-        </mat-error>
-      </mat-form-field>
-      <mat-form-field *ngIf="instr2">
-        <mat-label>2</mat-label>
-        <textarea
-          matInput
-          cdkTextareaAutosize
-          #autosize="cdkTextareaAutosize"
-          cdkAutosizeMinRows="1"
-          cdkAutosizeMaxRows="5"
-          name="instrukcja2"
-          [(ngModel)]="przepis.instrukcja2"
-          (ngModelChange)="touchedtextarea(2)"
-          (blur)="handleBlur($event, 2)"
-        ></textarea>
-      </mat-form-field>
-      <mat-form-field *ngIf="instr3">
-        <mat-label>3</mat-label>
-        <textarea
-          matInput
-          cdkTextareaAutosize
-          #autosize="cdkTextareaAutosize"
-          cdkAutosizeMinRows="1"
-          cdkAutosizeMaxRows="5"
-          name="instrukcja3"
-          [(ngModel)]="przepis.instrukcja3"
-          (blur)="handleBlur($event, 3)"
-          (ngModelChange)="touchedtextarea(3)"
-        ></textarea>
-      </mat-form-field>
-      <mat-form-field *ngIf="instr4">
-        <mat-label>4</mat-label>
-        <textarea
-          matInput
-          cdkTextareaAutosize
-          #autosize="cdkTextareaAutosize"
-          cdkAutosizeMinRows="1"
-          cdkAutosizeMaxRows="5"
-          name="instrukcja4"
-          [(ngModel)]="przepis.instrukcja4"
-          (ngModelChange)="touchedtextarea(4)"
-          (blur)="handleBlur($event, 4)"
-        ></textarea>
-      </mat-form-field>
-      <mat-form-field *ngIf="instr5">
-        <mat-label>5</mat-label>
-        <textarea
-          matInput
-          cdkTextareaAutosize
-          #autosize="cdkTextareaAutosize"
-          cdkAutosizeMinRows="1"
-          cdkAutosizeMaxRows="5"
-          name="instrukcja5"
-          [(ngModel)]="przepis.instrukcja5"
-          (ngModelChange)="touchedtextarea(5)"
-          (blur)="handleBlur($event, 5)"
-        ></textarea>
-      </mat-form-field>
-      <mat-form-field *ngIf="instr6">
-        <mat-label>6</mat-label>
-        <textarea
-          matInput
-          cdkTextareaAutosize
-          #autosize="cdkTextareaAutosize"
-          cdkAutosizeMinRows="1"
-          cdkAutosizeMaxRows="5"
-          name="instrukcja6"
-          [(ngModel)]="przepis.instrukcja6"
-          (blur)="handleBlur($event, 6)"
-        ></textarea>
-      </mat-form-field>
-
-      <button type="submit">Dodaj przepis</button>
-    </form>
-
+    <div class="divider-text" formArrayName="instrukcje">
+      <h1>Czynności:</h1>
+      <ng-container
+        *ngFor="let instrukcja of instrukcje.controls; let i = index"
+      >
+        <mat-form-field>
+          <mat-label>{{ i + 1 }}.</mat-label>
+          <textarea
+            matInput
+            cdkTextareaAutosize
+            #autosize="cdkTextareaAutosize"
+            cdkAutosizeMinRows="1"
+            cdkAutosizeMaxRows="5"
+            [formControlName]="i"
+            (input)="checkFields(i)"
+          ></textarea>
+          <mat-error *ngIf="instrukcje.controls[i].hasError('required')">
+            Przynajmniej jedna instrukcja musi zostać dodana
+          </mat-error>
+        </mat-form-field>
+      </ng-container>
+    </div>
   </div>
-</div>
-
+  <button type="submit">Dodaj przepis</button>
+</form>
