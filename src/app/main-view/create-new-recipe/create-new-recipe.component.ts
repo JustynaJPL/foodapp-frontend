@@ -53,6 +53,7 @@ export class CreateNewRecipeComponent {
   produkty: Produkt[] = [];
   formData = new FormData();
   imageUrl: string | ArrayBuffer | null = null;
+  skladnikidoBazy: Skladnik[] = [];
 
   constructor(
     private route: ActivatedRoute,
@@ -114,6 +115,11 @@ export class CreateNewRecipeComponent {
 
   get instrukcje(): FormArray {
     return this.recipeForm.get("instrukcje") as FormArray;
+  }
+
+  getInstrukcjeFromForm(): string[] {
+    const instrukcjeArray = this.recipeForm.get("instrukcje") as FormArray;
+    return instrukcjeArray.controls.map((control) => control.value);
   }
 
   maxArrayLength(max: number): ValidatorFn {
@@ -315,11 +321,8 @@ export class CreateNewRecipeComponent {
   submitForm() {
     const instrukcje = this.recipeForm.get("instrukcje") as FormArray;
     // Usuń puste pola przed wysłaniem, jeśli potrzebujesz
-    for (let i = instrukcje.length - 1; i >= 0; i--) {
-      if (!instrukcje.at(i).value) {
-        instrukcje.removeAt(i);
-      }
-    }
+
+
 
     // Sprawdź, czy formularz jest niepoprawny
     if (this.recipeForm.invalid) {
@@ -339,61 +342,107 @@ export class CreateNewRecipeComponent {
         }
       });
     } else {
-      console.log("Formularz wysłany pomyślnie:", this.recipeForm.value);
-    }
 
-    let przepis : Przepis = {
+      for (let i = instrukcje.length - 1; i >= 0; i--) {
+        if (!instrukcje.at(i).value) {
+          instrukcje.removeAt(i);
+        }
+      }
+      console.log("Formularz poprawny", this.recipeForm.value);
+
+
+    let inst = this.getInstrukcjeFromForm();
+
+    let przepis: Przepis = {
       id: 0,
-      nazwaPrzepisu: this.recipeForm.get('nazwaPrzepisu')?.value,
-      instrukcja1: '',
+      nazwaPrzepisu: this.recipeForm.get("nazwaPrzepisu")?.value,
+      instrukcja1: inst.length > 0 ? inst[0] : "",
+      instrukcja2: inst.length > 1 ? inst[1] : undefined,
+      instrukcja3: inst.length > 2 ? inst[2] : undefined,
+      instrukcja4: inst.length > 3 ? inst[3] : undefined,
+      instrukcja5: inst.length > 4 ? inst[4] : undefined,
+      instrukcja6: inst.length > 5 ? inst[5] : undefined,
       kategoria1: {
         data: {
           attributes: {
             id: this.recipeForm.get("kategoria.id")?.value,
-            nazwakategori: this.recipeForm.get("kategoria.nazwa")?.value
-          }
-        }
+            nazwakategori: this.recipeForm.get("kategoria.nazwa")?.value,
+          },
+        },
       },
       gda: {
-        kcal: this.recipeForm.get('kcal')?.value,
-        bialka: this.recipeForm.get('bialko')?.value,
-        tluszcze: this.recipeForm.get('tluszcze')?.value,
-        weglowodany: this.recipeForm.get('weglowodany')?.value
-      }
+        kcal: this.recipeForm.get("kcal")?.value,
+        bialka: this.recipeForm.get("bialko")?.value,
+        tluszcze: this.recipeForm.get("tluszcze")?.value,
+        weglowodany: this.recipeForm.get("weglowodany")?.value,
+      },
+    };
+
+    const sklad = this.recipeForm.get("skladniki") as FormArray;
+
+    const skladnikiDoBazy: Skladnik[] = sklad.controls.map((control) => {
+      // Zakładam, że kontrolki w FormArray są FormGroup, co pozwala na łatwe odwołanie się do wartości
+      const formGroup = control as FormGroup;
+
+      // Teraz możesz utworzyć obiekt Skladnik korzystając z wartości z formGroup
+      const s: Skladnik = {
+        id: formGroup.get("id")?.value,
+        ilosc: formGroup.get("ilosc")?.value,
+        nazwaProduktu: formGroup.get("nazwa")?.value, // Zakładam, że pole nazywa się "nazwa"
+        kcal: formGroup.get("kcal")?.value,
+        tluszcze: formGroup.get("tluszcze")?.value,
+        weglowodany: formGroup.get("weglowodany")?.value,
+        bialko: formGroup.get("bialko")?.value,
+        kcalperw: formGroup.get("kcalperw")?.value,
+        tluszczeperw: formGroup.get("tluszczeperw")?.value,
+        weglowodanyperw: formGroup.get("weglowodanyperw")?.value,
+        bialkoperw: formGroup.get("bialkoperw")?.value,
+      };
+
+      return s;
+    });
+
+    console.log(skladnikiDoBazy);
+
+    this.dbservice
+      .uploadFileToDB(this.formData)
+      .pipe(
+        switchMap((data) => {
+          przepis.imageId = data[0].id;
+          return this.dbservice.addRecipetoDB(przepis, przepis.imageId!);
+        }),
+        switchMap((resp) => {
+          przepis.id = resp.data.id;
+          return this.dbservice.uploadImagetoRecipeWithNumber(
+            przepis.id,
+            przepis.imageId!
+          );
+        }),
+        switchMap((finalResp) => {
+          // Tutaj dodajemy składniki do przepisu, używając przepisid jako ID przepisu
+          return this.dbservice.createSkladniksofRecipe(
+            skladnikiDoBazy,
+            przepis.id
+          );
+        })
+      )
+      .subscribe({
+        next: (finalResp) => {
+          console.log(finalResp);
+          console.log(przepis);
+          this.submitedMessage("Przepis został dodany do bazy!");
+          // Możesz dodać tutaj dodatkową logikę po pomyślnym dodaniu wszystkich elementów
+        },
+        error: (error) => {
+          console.error(
+            "Wystąpił błąd podczas przetwarzania formularza",
+            error
+          );
+        },
+      });
+    this.goBack();
     }
-
-
-
-
   }
-
-  //   this.dbservice.uploadFileToDB(this.formData).pipe(
-  //     switchMap(data => {
-  //       this.recipeForm.get('image')?.setValue(data[0].id);
-  //       return this.dbservice.addRecipetoDB(this.przepis, this.przepis.imageId!);
-  //     }),
-  //     switchMap(resp => {
-  //       this.przepisid = resp.data.id;
-  //       return this.dbservice.uploadImagetoRecipeWithNumber(this.przepisid, this.przepis.imageId!);
-  //     }),
-  //     switchMap(finalResp => {
-  //       // Tutaj dodajemy składniki do przepisu, używając przepisid jako ID przepisu
-  //       return this.dbservice.createSkladniksofRecipe(this.skladniki, this.przepisid);
-  //     })
-  //   ).subscribe({
-  //     next: (finalResp) => {
-  //       console.log(finalResp);
-  //       console.log(this.przepis);
-  //       this.submitedMessage("Przepis został dodany do bazy!")
-  //       // Możesz dodać tutaj dodatkową logikę po pomyślnym dodaniu wszystkich elementów
-  //     },
-  //     error: (error) => {
-  //       console.error('Wystąpił błąd podczas przetwarzania formularza', error);
-  //     }
-  //   });
-  //   this.goBack();
-  // }
-  // }
 
   goBack(): void {
     this.location.back();
@@ -403,25 +452,3 @@ export class CreateNewRecipeComponent {
     this._snackBar.open(message, "ok!");
   }
 }
-
-//   handleFileInput(event: any) {
-//     const file = event.target.files[0];
-//     if (file) {
-//       this.formData.set("files", file);
-//       // console.log(this.formData);
-//       const reader = new FileReader();
-//       reader.onload = () => {
-//         this.imageUrl = reader.result;
-//         this.choosenimage = true;
-//       };
-//       this.choosenimage = true;
-//       reader.readAsDataURL(file);
-//       if(this.notchoosenimage==true) this.notchoosenimage=false;
-
-//     }
-//     else{
-//       this.notchoosenimage = true;
-//     }
-//   }
-
-//   private przepisid:number=0;

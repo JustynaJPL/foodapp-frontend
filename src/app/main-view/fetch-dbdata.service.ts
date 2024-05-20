@@ -46,6 +46,7 @@ export class FetchDBdataService {
   getAllrecipes(): Observable<Przepis[]> {
     return this.http.get(this.geturlrecipes, this.authopts).pipe(
       map((data: any) => {
+        // console.log(data);
         let recipes: Przepis[] = [];
         for (let i = 0; i < data.data.length; i++) {
           let p: Przepis = {
@@ -70,9 +71,9 @@ export class FetchDBdataService {
             kategoria1: {
               data: {
                 attributes: {
-                  id:data.data[i].attributes.kategoria1.id,
+                  id:data.data[i].attributes.kategoria1.data.id,
                   nazwakategori:
-                    data.data[i].attributes.kategoria1.nazwakategori,
+                    data.data[i].attributes.kategoria1.data.attributes.nazwakategori,
                 },
               },
             },
@@ -234,7 +235,6 @@ export class FetchDBdataService {
     );
   }
 
-  policzMakroSkladnikow() {}
 
   getAllProdukts(): Observable<Produkt[]> {
     return this.http.get(this.geturlprodukts, this.authopts).pipe(

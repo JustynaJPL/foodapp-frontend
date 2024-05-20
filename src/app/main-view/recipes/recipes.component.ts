@@ -66,9 +66,10 @@ export class RecipesComponent {
   ngOnInit() {
     this.dataservice.getAllrecipes().subscribe(
       (recipes: Przepis[]) => {
+        console.log(recipes);
         this.przepisy = recipes;
         this.dataSource.data = this.przepisy;
-        console.log(this.przepisy); // Możesz wyświetlić pobrane przepisy w konsoli
+        // console.log(this.przepisy); // Możesz wyświetlić pobrane przepisy w konsoli
       },
       error => {
         console.log('Wystąpił błąd podczas pobierania przepisów:', error);

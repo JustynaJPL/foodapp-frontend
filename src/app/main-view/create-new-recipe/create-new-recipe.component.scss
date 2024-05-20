@@ -35,121 +35,187 @@
 
 .new-recipe {
   display: flex;
-  display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  justify-content: space-around;
+  justify-content: center;
   align-items: flex-start;
   align-content: flex-start;
-  min-height: 70vh;
-  padding: 20px;
-  .image-cont {
-    width: 30%;
-    position: relative;
-    overflow: hidden;
-    margin: 5px;
+  padding: 0 1%;
 
-    img {
-      width: 90%;
-      height: auto;
-      display: block;
-      position: relative;
-      // z-index: 1; // Ustawienie z-index zapewnia, że obraz będzie na wierzchu
-    }
+  .recipe-form {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: flex-start;
+    align-content: flex-start;
 
-    &::before {
-      content: "";
-      position: absolute;
-      top: 0;
-      bottom: 0;
-      left: calc(70% - 10px);
-      right: 0; // szerokość drugiego diva + marginesy
-      // background-color: rgba(255, 255, 255, 0.5); // kolor tła
-      // z-index: 2; // Ustawienie z-index wyższe niż obrazu, ale niższe niż reszta zawartości
-    }
-  }
-  .recipe-content {
-    width: 69%;
-    position: relative;
-    overflow: hidden;
-    // padding: 10px;
-    background-color: rgba(255, 255, 255, 0.5);
-    // height: 100%;
-    h1{
-      margin: 25px 0px 25px;
-      font-size: 30px;
-      color: var(--primary-color);
-    }
-    h2{
-      margin:0 20px 0;
-      color: var(--light-primary-color);
-    }
-    mat-row{
-      &:hover{
-        background-color: var(--accent-color);
+    .image-cont {
+      flex: 0 0 29%;
+      display: flex;
+      flex-direction: column;
+      flex-wrap: wrap;
+      justify-content: flex-start;
+      align-items: center;
+      align-content: flex-start;
+
+      img {
+        width: 100%;
       }
     }
 
-  }
+    .recipe-content {
+      flex: 0 0 60%;
+      display: flex;
+      flex-direction: column;
+      flex-wrap: wrap;
+      justify-content: flex-start;
+      align-items: flex-start;
+      align-content: flex-start;
+      padding: 0 2%;
 
-}
-.recipe-form{
-  display: flex;
-flex-direction: column;
-flex-wrap: wrap;
-justify-content: space-between;
-align-items: stretch;
-align-content: stretch;
+      h1 {
+        display: block;
+        margin: 10px 20px;
+      }
 
-}
+      mat-form-field{
+        width: 100%;
+      }
 
-.produkty {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between; /* Rozłożenie elementów na szerokość */
+      .kategoria{
+        display: flex;
+        flex-direction: column;
+        flex-wrap: wrap;
+        justify-content: flex-start;
+        align-items: flex-start;
+        align-content: flex-start;
+        width: 100%;
+        mat-form-field{
+          width: 100%;
+        }
+      }
 
+      .skladniki-content {
+        display: flex;
+        flex-direction: column;
+        flex-wrap: wrap;
+        justify-content: flex-start;
+        align-items: flex-start;
+        align-content: flex-start;
+        width: 100%;
 
-  .perportion {
-    width: 100%; /* Szerokość kontenera */
-    display: flex;
-    justify-content: space-between; /* Rozłożenie elementów na szerokość */
+        .main {
+          display: flex;
+          flex-direction: row;
+          flex-wrap: wrap;
+          justify-content: flex-start;
+          align-items: flex-start;
+          align-content: flex-start;
+          width: 100%;
+          mat-form-field {
+            width: 50%;
+          }
+        }
 
-  }
+        .statistics {
+          display: flex;
+          flex-direction: row;
+          flex-wrap: wrap;
+          justify-content: space-around;
+          align-items: flex-start;
+          align-content: flex-start;
+          width: 100%;
+          .per100 {
+            width: 25%;
+          }
+          .perp {
+            width: 25%;
+          }
+          button {
+            width: 100%;
+            margin: 10px 0;
+          }
+        }
 
-  mat-form-field {
-    width: 48%; /* Szerokość elementów formularza */
-    margin-bottom: 10px; /* Margines dolny między elementami */
-  }
-  .perp {
-    width: 12%; /* Szerokość elementów formularza w kontenerze perportion */
-  }
-  button{
-    width: 10%;
-    margin-bottom: 40px;
-  }
-
-  .per100{
-    width: 8%;
-
-  }
-
-}
-
-
-
-
-.summary {
-  display: flex; // Użyjemy flexboxa, aby umożliwić wyświetlanie elementów w jednej linii
-  flex-direction: row; // Ustaw kierunek elementów na wiersz
-  justify-content: flex-end; // Rozmieść elementy równomiernie z zachowaniem jednakowej przestrzeni pomiędzy nimi
-  align-items: stretch; // Rozciągnij elementy, aby wypełniły kontener w pionie
-  .fin8 {
-    width: 15%;
-    display: inline;
-    mat-label{
-      color: var(--accent-color);
+        button {
+          width: 100%;
+          margin: 10px 0;
+        }
+      }
     }
-   }
+
+    .summary {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      align-items: flex-start;
+      align-content: flex-start;
+      width: 100%;
+      .fin8 {
+        width: 25%;
+
+      }
+      mat-label{
+        color: var(--primary-color);
+
+      }
+    }
+
+    .instructions {
+      display: flex;
+      flex-direction: column;
+      flex-wrap: wrap;
+      justify-content: flex-start;
+      align-items: flex-start;
+      align-content: flex-start;
+      width: 100%;
+      mat-form-field{
+        width: 100%;
+      }
+    }
+
+    .submit-btn{
+      width: 100%;
+    }
+  }
+}
+
+.error-btn{
+  background-color: var(--primary-color);
+  border: none;
+  color: var(--text);
+  padding: 5px;
+  margin: 20px;
+}
+
+mat-select{
+  width: 100%;
+}
+.kategoria{
+  width: 100%;
+}
+
+.addskladnik {
+  background-color: var(--accent-color);
+  border: none;
+  color: var(--text);
+  padding: 5px;
+  margin: 20px;
+  border-radius: 5px;
+  font-size: large;
+  font-style: bold;
 
 }
 
+.submit-btn{
+  background-color: var(--primary-color);
+  border: none;
+  color: var(--text);
+  padding: 5px;
+  margin: 20px;
+  border-radius: 5px;
+  font-size: large;
+  font-style: bold;
+}
